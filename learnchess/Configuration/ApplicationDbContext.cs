@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace learnchess.Data
+namespace learnchess.Configuration
 {
     public class ApplicationDbContext : DbContext
     {
