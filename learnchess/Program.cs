@@ -1,4 +1,4 @@
-using learnchess.Data;
+using learnchess.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
