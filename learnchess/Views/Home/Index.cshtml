@@ -1,8 +1,220 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+<body class="bg-secondary">
+	<div>
+		<div class="p-5">
+			<h1 class="mx-5">NEWS</h1>
+			<div id="carouselExampleDark" class="carousel carousel-dark slide p-5" data-bs-ride="carousel">
+				<div class="carousel-indicators">
+					<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+					<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+					<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+				</div>
+				<div class="carousel-inner">
+					<div class="carousel-item active" data-bs-interval="10000">
+						<img src="/Photos/ChessLegends.png" class="d-block w-100" alt="...">
+						<div class="carousel-caption d-none d-md-block">
+							<h5 class="text-warning fw-bold">ColinStapczynski</h5>
+							<p class="text-warning fw-semibold">The 10 Best Chess Players Of All Time</p>
+						</div>
+					</div>
+					<div class="carousel-item" data-bs-interval="2000">
+						<img src="/Photos/ChessCulture.png" class="d-block w-100" alt="...">
+						<div class="carousel-caption d-none d-md-block">
+							<h5 class="text-warning fw-bold">NathanielGreen</h5>
+							<p class="text-warning fw-semibold">Everything You Need To Know About Chess Culture</p>
+						</div>
+					</div>
+					<div class="carousel-item">
+						<img src="/Photos/ChessSecrets.png" class="d-block w-100" alt="...">
+						<div class="carousel-caption d-none d-md-block">
+							<h5 class="text-warning fw-bold">GM Gserper</h5>
+							<p class="text-warning fw-semibold">The Secrets Of Uzbek Masters</p>
+						</div>
+					</div>
+				</div>
+				<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Previous</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Next</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div>
+		<div class="row row-cols-1 row-cols-md-2 g-4">
+			<div class="col">
+				<div class="card">
+					<img src="/Photos/MagnusVSMaxime.png" class="card-img-top" alt="...">
+					<div class="card-body">
+						<h5 class="card-title">Carlsen Dismantles Reigning World Blitz Champion In Dominant Flight To Final</h5>
+						<p class="card-text">GM Magnus Carlsen defeated GM Maxime Vachier-Lagrave in the 2022 Speed Chess Championship second semifinal match on Friday.</p>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card">
+					<img src="/Photos/HikaruVSNihal.png" class="card-img-top" alt="...">
+					<div class="card-body">
+						<h5 class="card-title">Nakamura Confirms Spot In Final, Nears 5th SCC Title</h5>
+						<p class="card-text">The showdown between two of Chess.com's pre-eminent blitz and bullet chess players in the 2022 Speed Chess Championship was comfortably won by GM Hikaru Nakamura on Thursday.</p>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card">
+					<img src="/Photos/MasterTaniAdewumi.jpg" class="card-img-top" alt="...">
+					<div class="card-body">
+						<h5 class="card-title">12-Year-Old Master Tani Adewumi Granted Asylum in U.S.</h5>
+						<p class="card-text">At age 10, Adewumi became a national master and, a few months later, he earned the FIDE Master title. He currently has three International Master norms, after earning the third at the 2022 New York.</p>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card">
+					<img src="/Photos/FIDEimageGroup.png" class="card-img-top" alt="...">
+					<div class="card-body">
+						<h5 class="card-title">FIDE Announces 2024 Candidates Tournament Qualification Paths</h5>
+						<p class="card-text">On December 15, 2022, FIDE announced the paths of qualification for the next Candidates Tournament, which will be held in 2024 and will determine the challenger in the 2024 World Championship.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br />
+	<hr />
+	<div>
+		<h1 class="p-4">Grand Masters</h1>
+		<div class="row row-cols-1 row-cols-md-3 g-4">
+			<div class="col">
+				<div class="card h-100">
+					<img src="/Photos/GM-MagnusCharlsen.jpeg" class="card-img-top p-4" alt="...">
+					<div class="card-body">
+						<h5 class="card-title">GM Magnus Carlsen</h5>
+						<p class="card-text">GM Magnus Carlsen is the current world chess champion. To many people, he’s the best to ever play the game, although GMs Garry Kasparov and Bobby Fischer remain in the conversation. At any rate, the clear and remarkable point is that before turning 30 years old, Carlsen has already earned...</p>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card h-100">
+					<img src="/Photos/GM-HikaruNakamura.png" class="card-img-top p-4" alt="...">
+					<div class="card-body">
+						<h5 class="card-title">GM Hikaru Nakamura</h5>
+						<p class="card-text">Hikaru Nakamura was born December 9, 1987 in Hirakata, Japan. His family moved to the United States when he was just two years old, and the Stars and Stripes are the only national banner he has known as a chess player.  Nakamura has been one of the world’s top players for well over a decade...</p>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card h-100">
+					<img src="/Photos/GM-AnishGiri.jpeg" class="card-img-top p-4" alt="...">
+					<div class="card-body">
+						<h5 class="card-title">GM Anish Giri</h5>
+						<p class="card-text">GM Anish Giri is a four-time Dutch champion and a world-class player. He has been ranked as high as number three in the world and reached his peak rating of 2802 on February 15, 2015. Giri has represented the Netherlands at the Olympiads since 2010. He won the 2012 Reggio Emilia tournament and the 2017...</p>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card h-100">
+					<img src="/Photos/GM-DingLiren.png" class="card-img-top p-4" alt="...">
+					<div class="card-body">
+						<h5 class="card-title">GM Ding Liren</h5>
+						<p class="card-text">Ding Liren is a Chinese super grandmaster who will play against GM Ian Nepomniachtchi in the 2023 World Championship. Ding won his first Chinese Chess Championship at the age of 16, making him the youngest to ever do so. In the 2017 and 2019 Chess World Cup, he became the first player in history to...</p>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card h-100">
+					<img src="/Photos/GM-ViswanathanAnand.jpeg" class="card-img-top p-4" alt="...">
+					<div class="card-body">
+						<h5 class="card-title">GM Viswanathan Anand</h5>
+						<p class="card-text">Viswanathan Anand, the 15th undisputed chess champion and surely the greatest Indian chess player of all time, was born on Dec. 11, 1969 in Mayiladuthurai in Tamil Nadu, the southeasternmost state in India. Anand, noted for playing quickly early in his career, competed for the classical championship...</p>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card h-100">
+					<img src="/Photos/GM-SergeyKarjakin.jpeg" class="card-img-top p-4" alt="...">
+					<div class="card-body">
+						<h5 class="card-title">GM Sergey Karjakin</h5>
+						<p class="card-text">Sergey Karjakin is an elite chess player who broke the record of youngest-ever GM at 12 years and seven months of age in 2003. Karjakin held his record until 2021 when GM Abhimanyu Mishra broke his record. Most notably, he pushed GM Magnus Carlsen—typically considered one of the two...</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br />
+		<button type="button" class="btn btn-outline-success fw-bold">See More</button>
+	</div>
+	<h1 class="p-4">Books</h1>
+	<div class="row row-cols-1 row-cols-md-2 g-4">
+		<div class="col">
+			<div class="card col mb-3" style="max-width: 540px;">
+				<div class="row g-0">
+					<div class="col-md-4">
+						<img src="/Photos/Book1-BobyFisherTeachesChess.jpg" class="img-fluid rounded-start" alt="...">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<h5 class="card-title">Bobby Fischer Teaches Chess</h5>
+							<p class="card-text">Learn how to play chess the Bobby Fischer way with the fastest, most efficient, most enjoyable method ever devised. Whether you’re just learning the game or looking for more complex strategies, these practice problems and exercises will help you master the art of the checkmate.</p>
+							<p class="card-text"><small class="text-muted">by Bobby Fischer</small></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="card mb-3" style="max-width: 540px;">
+				<div class="row g-0">
+					<div class="col-md-4">
+						<img src="/Photos/Book2-ChessForKids.jpg" class="img-fluid rounded-start" alt="...">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<h5 class="card-title">Chess for Kids</h5>
+							<p class="card-text">Learn how to play chess through this fun, illustrated chess guide! A board game like no other, chess challenges young minds to think strategically about moves by applying the principles of chess to their club games, tournaments and championships.</p>
+							<p class="card-text"><small class="text-muted">by Michael Basman</small></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="card col mb-3" style="max-width: 540px;">
+				<div class="row g-0">
+					<div class="col-md-4">
+						<img src="/Photos/Book3-ModernChessOpennings.jpg" class="img-fluid rounded-start" alt="...">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<h5 class="card-title">Modern Chess Openings</h5>
+							<p class="card-text">Modern Chess Openings is the best and most trusted tool for serious chess players on the market. First published over a half-century ago, this is a completely revised and updated edition of the book that has been the standard English language reference on chess openings.</p>
+							<p class="card-text"><small class="text-muted">by Nick De Firmian</small></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="card mb-3" style="max-width: 540px;">
+				<div class="row g-0">
+					<div class="col-md-4">
+						<img src="/Photos/Book4-ChessFundamentals.jpg" class="img-fluid rounded-start" alt="...">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<h5 class="card-title">Chess Fundamentals</h5>
+							<p class="card-text">Written with the novice chess player in mind, Chess Fundamentals equips you with the essential opening, middlegame, and endgame techniques needed to advance your game. Capablanca writes with an ease of understanding that any chess player will grasp, and includes 14 full games annotated by the World Champion himself.</p>
+							<p class="card-text"><small class="text-muted">by Jose Capablanca</small></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
