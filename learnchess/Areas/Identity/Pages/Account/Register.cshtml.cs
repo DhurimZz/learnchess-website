@@ -67,10 +67,10 @@ namespace learnchess.Areas.Identity.Pages.Account
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
             [Required]
-            [Display(Name = "Adress")]
+            [Display(Name = "Address")]
             public string Address { get; set; }
-            [Display(Name = "User Picture")]
-            public byte[] Picture { get; set; }
+            
+            
 
             [Required]
             [EmailAddress]
@@ -108,16 +108,7 @@ namespace learnchess.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
 
-                if (Request.Form.Files.Count > 0)
-                {
-                    IFormFile file = Request.Form.Files.FirstOrDefault();
-                    using (var dataStream = new MemoryStream())
-                    {
-                        await file.CopyToAsync(dataStream);
-                        user.ProfilePicture = dataStream.ToArray();
-                    }
-                    await _userManager.UpdateAsync(user);
-                }
+             
                
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
