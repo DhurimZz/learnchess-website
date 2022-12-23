@@ -1,4 +1,5 @@
 ﻿using learnchess.Areas.Identity.Data;
+using learnchess.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -7,10 +8,12 @@ namespace learnchess.Areas.Identity.Data;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
+    public DbSet<Author> authors { get; set; }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
     }
+       
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
