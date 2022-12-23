@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using learnchess.Models;
 
 namespace learnchess.Areas.Identity.Data;
 
@@ -45,4 +46,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.ToTable("UserTokens");
         });
     }
+
+    public DbSet<learnchess.Models.Contactus> Contactus { get; set; }
 }
