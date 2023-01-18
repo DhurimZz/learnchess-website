@@ -5,13 +5,13 @@
 	ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Authors</h1>
 
 <p>
-	<a asp-action="Create">Create New</a>
+	<a asp-action="Create" type="button" class="btn btn-outline-primary">Create New</a>
 </p>
 <div class="row my-5">
-	<h3 class="fs-4 mb-3">Recent Orders</h3>
+	<h3 class="fs-4 mb-3">Registred Authors List</h3>
 	<div class="col">
 		<table class="table bg-white rounded shadow-sm  table-hover">
 			<thead>
@@ -30,7 +30,7 @@
 				@foreach (var item in Model)
 				{
 					<tr>
-						<th scope="row">-></th>
+						<th scope="row">-</th>
 						<td>
 							@Html.DisplayFor(modelItem => item.Name)
 						</td>
@@ -38,9 +38,9 @@
 							@Html.DisplayFor(modelItem => item.SurName)
 						</td>
 						<td>
-							<a asp-action="Edit" asp-route-id="@item.AuthorId">Edit</a> |
-							<a asp-action="Details" asp-route-id="@item.AuthorId">Details</a> |
-							<a asp-action="Delete" asp-route-id="@item.AuthorId">Delete</a>
+							<a asp-action="Edit" asp-route-id="@item.AuthorId" type="button" class="btn btn-outline-info">Edit</a> |
+							<a asp-action="Details" asp-route-id="@item.AuthorId" type="button" class="btn btn-outline-secondary">Details</a> |
+							<a asp-action="Delete" asp-route-id="@item.AuthorId" type="button" class="btn btn-outline-danger">Delete</a>
 						</td>
 					</tr>
 				}
