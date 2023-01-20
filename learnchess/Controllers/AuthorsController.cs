@@ -22,7 +22,7 @@ namespace learnchess.Controllers
         // GET: Authors
         public async Task<IActionResult> Index()
         {
-              return View(await _context.authors.ToListAsync());
+            return View(await _context.authors.ToListAsync());
         }
 
         // GET: Authors/Details/5
