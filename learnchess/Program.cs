@@ -9,10 +9,11 @@ var connectionString = builder.Configuration.GetConnectionString("ApplicationDbC
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultUI().AddDefaultTokenProviders().AddDefaultUI().AddDefaultTokenProviders(); 
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultUI().AddDefaultTokenProviders();
 
 
+builder.Services.AddScoped<RoleManager<IdentityRole>>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -20,9 +21,6 @@ builder.Services.AddControllersWithViews();
 
 
 var app = builder.Build();
-
-
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -33,6 +31,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+await seedDatabase();
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -47,3 +46,13 @@ app.MapRazorPages();
 
 app.Run();
 
+ async Task seedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        await ContextSeed.SeedRolesAsync(roleManager);
+    }
+}
