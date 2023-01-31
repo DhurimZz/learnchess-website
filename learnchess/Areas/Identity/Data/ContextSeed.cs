@@ -11,9 +11,9 @@ namespace learnchess.Areas.Identity.Data
             {
                 await roleManager.CreateAsync(new IdentityRole(Enums.Roles.Admin.ToString()));
             }
-            if (!await roleManager.RoleExistsAsync(Enums.Roles.Basic.ToString()))
+            if (!await roleManager.RoleExistsAsync(Enums.Roles.User.ToString()))
             {
-                await roleManager.CreateAsync(new IdentityRole(Enums.Roles.Basic.ToString()));
+                await roleManager.CreateAsync(new IdentityRole(Enums.Roles.User.ToString()));
             }
         }
     }

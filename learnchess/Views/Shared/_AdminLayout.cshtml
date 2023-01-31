@@ -32,6 +32,12 @@
 				<a class="list-group-item list-group-item-action bg-transparent second-text fw-bold" asp-area="" asp-controller="Contactus" asp-action="Index">
 					<i class="fas fa-inbox me-2"></i>ContactUs
 				</a>
+                <a class="list-group-item list-group-item-action bg-transparent second-text fw-bold" asp-area="" asp-controller="Roles" asp-action="Index">
+					<i class="fas fa-inbox me-2"></i>Roles
+				</a>
+				<a class="list-group-item list-group-item-action bg-transparent second-text fw-bold" asp-area="" asp-controller="UserRoles" asp-action="Index">
+					<i class="bi bi-gear-fill me-2"></i>UserRoles
+				</a>
 			</div>
 		</div>
 		<!-- /#sidebar-wrapper -->
@@ -48,7 +54,7 @@
 					<span class="navbar-toggler-icon"></span>
 				</button>
 
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				@*<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle second-text fw-bold" id="navbarDropdown"
@@ -62,7 +68,7 @@
 							</ul>
 						</li>
 					</ul>
-				</div>
+				</div>*@
 			</nav>
 			<div class="container-fluid px-4">
 				@RenderBody()

@@ -3,48 +3,84 @@
 @{
     ViewData["Title"] = "Register";
 }
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-floating mt-3">
-                <input asp-for="Input.FirstName" class="form-control"  aria-required="true" />
-                <label asp-for="Input.FirstName"></label>
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+<h1 class="text-center mt-5 mb-5">@ViewData["Title"]</h1>
+
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="/Photos/Register.png"
+                     class="img-fluid" alt="Sample image">
             </div>
-            <div class="form-floating mt-3">
-                <input asp-for="Input.LastName" class="form-control"  aria-required="true" />
-                    <label asp-for="Input.LastName"></label>
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                 
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                     
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    
+                        <div class="form-outline mb-4">
+                       
+                        <input asp-for="Input.FirstName" class="form-control form-control-lg" aria-required="true" />
+                        <label class="form-label" for="form3Example3">First name</label>
+                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-outline mb-4">
+
+                        <input asp-for="Input.LastName" class="form-control form-control-lg" aria-required="true" />
+                        <label class="form-label" for="form3Example3">Last name</label>
+                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-outline mb-4">
+
+                        <input asp-for="Input.Email" class="form-control form-control-lg" aria-required="true" autocomplete="username" />
+                        <label class="form-label" for="form3Example3">Email</label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-outline mb-4">
+
+                    <input asp-for="Input.Password" class="form-control form-control-lg" aria-required="true" autocomplete="new-password" />
+                    <label class="form-label" for="form3Example3">Password</label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-outline mb-4">
+
+                        <input asp-for="Input.ConfirmPassword" class="form-control form-control-lg" aria-required="true" autocomplete="new-password" />
+                        <label class="form-label" for="form3Example3">Confirm Password</label>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-outline mb-4">
+
+                        <input asp-for="Input.Address" class="form-control form-control-lg" aria-required="true" />
+                        <label class="form-label" for="form3Example3">Address</label>
+                        <span asp-validation-for="Input.Address" class="text-danger"></span>
+                    </div>
+
+
+           
+
+
+
+                   
+
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <button type="submit" class="btn btn-primary btn-lg"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                           Register
+                        </button>
+                        
+                    </div>
+
+                </form>
             </div>
-            <div class="form-floating mt-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                <label asp-for="Input.Email"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-floating mt-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
-                <label asp-for="Input.Password"></label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-floating mt-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
-                <label asp-for="Input.ConfirmPassword"></label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-floating mt-3">
-                <input asp-for="Input.Address" class="form-control"  aria-required="true" />
-                <label asp-for="Input.Address"></label>
-                <span asp-validation-for="Input.Address" class="text-danger"></span>
-            </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary mt-3">Register</button>
-        </form>
+        </div>
     </div>
-</div>
+
+</section>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    <partial name="_ValidationScriptsPartial" />}
