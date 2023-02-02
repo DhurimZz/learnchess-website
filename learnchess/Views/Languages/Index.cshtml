@@ -1,35 +1,40 @@
 ﻿@model IEnumerable<learnchess.Models.Languages>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
-<h1>Index</h1>
-
+<h1>Languages</h1>
 <p>
-    <a asp-action="Create">Create New</a>
+	<a asp-action="Create" type="button" class="btn btn-outline-primary">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Language)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Language)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row">
+	<h3 class="fs-4 mb-3">List of Languages</h3>
+	<div class="col">
+		<table class="table table-dark table-hover rounded shadow-sm">
+			<thead>
+				<tr>
+					<th scope="col">
+						@Html.DisplayNameFor(model => model.Language)
+					</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.Language)
+						</td>
+						<td>
+							<a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-outline-info">Edit</a> |
+							<a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-outline-secondary">Details</a> |
+							<a asp-action="Delete" asp-route-id="@item.Id" type="button" class="btn btn-outline-danger">Delete</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
