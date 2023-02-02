@@ -51,5 +51,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Author> authors { get; set; }
     public DbSet<learnchess.Models.Contactus> Contactus { get; set; }
 
+
     public DbSet<learnchess.Models.Article> Article { get; set; }
+
+    public DbSet<learnchess.Models.Languages> Language { get; set; }
 }
