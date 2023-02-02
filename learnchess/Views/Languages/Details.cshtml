@@ -1,24 +1,25 @@
-﻿@model learnchess.Models.Language
+﻿@model learnchess.Models.Languages
 
 @{
-    ViewData["Title"] = "Details";
+	ViewData["Title"] = "Details";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Language</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.language)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.language)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="bg-dark text-white p-3">
+	<div>
+		<h4 class="text-primary">Languages Details</h4>
+		<hr />
+		<dl class="row">
+			<dt class="col-sm-2">
+				@Html.DisplayNameFor(model => model.Language)
+			</dt>
+			<dd class="col-sm-10">
+				@Html.DisplayFor(model => model.Language)
+			</dd>
+		</dl>
+	</div>
+	<div>
+		<a asp-action="Edit" asp-route-id="@Model?.Id" type="button" class="btn btn-outline-info">Edit</a> |
+		<a asp-action="Index" type="button" class="btn btn-outline-warning">Back to List</a>
+	</div>
 </div>

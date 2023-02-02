@@ -33,14 +33,14 @@ namespace learnchess.Controllers
                 return NotFound();
             }
 
-            var language = await _context.Language
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (language == null)
+            var languages = await _context.Language
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (languages == null)
             {
                 return NotFound();
             }
 
-            return View(language);
+            return View(languages);
         }
 
         // GET: Languages/Create
@@ -54,15 +54,15 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,language")] Language language)
+        public async Task<IActionResult> Create([Bind("Id,Language")] Languages languages)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(language);
+                _context.Add(languages);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(language);
+            return View(languages);
         }
 
         // GET: Languages/Edit/5
@@ -73,12 +73,12 @@ namespace learnchess.Controllers
                 return NotFound();
             }
 
-            var language = await _context.Language.FindAsync(id);
-            if (language == null)
+            var languages = await _context.Language.FindAsync(id);
+            if (languages == null)
             {
                 return NotFound();
             }
-            return View(language);
+            return View(languages);
         }
 
         // POST: Languages/Edit/5
@@ -86,9 +86,9 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("id,language")] Language language)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Language")] Languages languages)
         {
-            if (id != language.id)
+            if (id != languages.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace learnchess.Controllers
             {
                 try
                 {
-                    _context.Update(language);
+                    _context.Update(languages);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LanguageExists(language.id))
+                    if (!LanguagesExists(languages.Id))
                     {
                         return NotFound();
                     }
@@ -113,7 +113,7 @@ namespace learnchess.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(language);
+            return View(languages);
         }
 
         // GET: Languages/Delete/5
@@ -124,14 +124,14 @@ namespace learnchess.Controllers
                 return NotFound();
             }
 
-            var language = await _context.Language
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (language == null)
+            var languages = await _context.Language
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (languages == null)
             {
                 return NotFound();
             }
 
-            return View(language);
+            return View(languages);
         }
 
         // POST: Languages/Delete/5
@@ -143,19 +143,19 @@ namespace learnchess.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Language'  is null.");
             }
-            var language = await _context.Language.FindAsync(id);
-            if (language != null)
+            var languages = await _context.Language.FindAsync(id);
+            if (languages != null)
             {
-                _context.Language.Remove(language);
+                _context.Language.Remove(languages);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LanguageExists(string id)
+        private bool LanguagesExists(string id)
         {
-          return _context.Language.Any(e => e.id == id);
+          return _context.Language.Any(e => e.Id == id);
         }
     }
 }

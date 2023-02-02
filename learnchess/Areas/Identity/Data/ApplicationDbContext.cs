@@ -52,5 +52,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     public DbSet<learnchess.Models.Contactus> Contactus { get; set; }
 
-    public DbSet<learnchess.Models.Language> Language { get; set; }
+    public DbSet<learnchess.Models.Languages> Language { get; set; }
 }
