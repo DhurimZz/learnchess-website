@@ -9,7 +9,6 @@ namespace learnchess.Areas.Identity.Data;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
-    public DbSet<Author> authors { get; set; }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
@@ -49,6 +48,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.ToTable("UserTokens");
         });
     }
-
+    public DbSet<Author> authors { get; set; }
     public DbSet<learnchess.Models.Contactus> Contactus { get; set; }
+
+    public DbSet<learnchess.Models.Article> Article { get; set; }
 }
