@@ -1,53 +1,51 @@
 ﻿@model learnchess.Models.Videos
 
 @{
-    ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Create";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>Videos</h4>
+<h1>Create new Video</h1>
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Url" class="control-label"></label>
-                <input asp-for="Url" class="form-control" />
-                <span asp-validation-for="Url" class="text-danger"></span>
-            </div>
+	<div class="col-md-4 bg-dark text-white">
+		<form asp-action="Create" enctype="multipart/form-data">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="Title" class="control-label"></label>
+				<input asp-for="Title" class="form-control" />
+				<span asp-validation-for="Title" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Description" class="control-label"></label>
+				<input asp-for="Description" class="form-control" />
+				<span asp-validation-for="Description" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Url" class="control-label"></label>
+				<input asp-for="Url" class="form-control" />
+				<span asp-validation-for="Url" class="text-danger"></span>
+			</div>
 
-            <div class="form-group">
-                <label asp-for="Video" style="width: 100%;"></label>
-                    <img id="video" style="width:350px;height:350px; object-fit:cover" src="">
-                <input type="file"
-                       accept=".png,.jpg,.jpeg,.gif,.tif"
-                       asp-for="Video"
-                       class="form-control"
-                       style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
-                       onchange="document.getElementById('video').src = window.URL.createObjectURL(this.files[0])" />
-                <span asp-validation-for="Video" class="text-danger"></span>
-            </div>
+			<div class="form-group">
+				<label asp-for="Video" style="width: 100%;"></label>
+				<img id="video" style="width:350px;height:350px; object-fit:cover" src="">
+				<input type="file"
+					   accept=".png,.jpg,.jpeg,.gif,.tif"
+					   asp-for="Video"
+					   class="form-control"
+					   style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+					   onchange="document.getElementById('video').src = window.URL.createObjectURL(this.files[0])" />
+				<span asp-validation-for="Video" class="text-danger"></span>
+			</div>
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+			<div class="form-group my-2">
+				<input type="submit" value="Create" class="btn btn-outline-primary" />
+			</div>
+			<div class="my-2">
+				<a asp-action="Index" type="button" class="btn btn-outline-warning">Back to List</a>
+			</div>
+		</form>
+	</div>
 </div>
