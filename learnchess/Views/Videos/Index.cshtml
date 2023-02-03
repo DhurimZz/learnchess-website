@@ -1,0 +1,62 @@
+﻿@model IEnumerable<learnchess.Models.Videos>
+
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>CRUD Videos Index</h1>
+
+<p>
+	<a asp-action="Create" type="button" class="btn btn-outline-primary">Create New</a>
+</p>
+<div class="row">
+	<div class="col">
+		<table class="table table-dark table-hover rounded shadow-sm">
+			<thead>
+				<tr>
+					<th scope="col">
+						@Html.DisplayNameFor(model => model.Video)
+					</th>
+					<th scope="col">
+						@Html.DisplayNameFor(model => model.Title)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Description)
+					</th>
+					<th scope="col">
+						@Html.DisplayNameFor(model => model.Url)
+					</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>
+							@if (item.Video != null)
+							{
+								<img style="width:150px;height:100px;" id="photo" class="" alt="..." object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.Video))">
+							}
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Title)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Description)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Url)
+						</td>
+						<td>
+							<a asp-action="Edit" asp-route-id="@item.VideosId" type="button" class="btn btn-outline-info my-1">Edit</a> |
+							<a asp-action="Details" asp-route-id="@item.VideosId" type="button" class="btn btn-outline-secondary my-1">Details</a> |
+							<a asp-action="Delete" asp-route-id="@item.VideosId" type="button" class="btn btn-outline-danger my-1">Delete</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
