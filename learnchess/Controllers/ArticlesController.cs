@@ -18,9 +18,27 @@ namespace learnchess.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> ArticlePage()
+        public async Task<IActionResult> ArticlePage(string sortOrder, string searchString)
         {
-            return View( await _context.Article.ToListAsync());
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+
+            var articles = from a in _context.Article
+                           select a;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                articles = articles.Where(a => a.Title.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    articles = articles.OrderByDescending(a => a.Title);
+                    break;
+                default:
+                    articles = articles.OrderBy(a => a.Title);
+                    break;
+            }
+            return View(await articles.AsNoTracking().ToListAsync());
         }
 
         // GET: Articles
