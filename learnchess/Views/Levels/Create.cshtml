@@ -1,33 +1,28 @@
 ﻿@model learnchess.Models.Levels
 
 @{
-    ViewData["Title"] = "Create";
+	ViewData["Title"] = "Create";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Create</h1>
+<h1>Create New Levels</h1>
 
-<h4>Levels</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Level" class="control-label"></label>
-                <input asp-for="Level" class="form-control" />
-                <span asp-validation-for="Level" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+	<div class="col-md-4 bg-dark text-white">
+		<form asp-action="Create">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="Level" class="control-label"></label>
+				<input asp-for="Level" class="form-control" />
+				<span asp-validation-for="Level" class="text-danger"></span>
+			</div>
+			<div class="form-group my-2">
+				<input type="submit" value="Create" class="btn btn-outline-primary" />
+			</div>
+			<div class="my-2">
+				<a asp-action="Index" type="button" class="btn btn-outline-warning">Back to List</a>
+			</div>
+		</form>
+	</div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
