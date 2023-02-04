@@ -57,4 +57,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<learnchess.Models.Languages> Language { get; set; }
 
     public DbSet<learnchess.Models.Videos> Videos { get; set; }
+
+    public DbSet<learnchess.Models.Levels> Levels { get; set; }
 }

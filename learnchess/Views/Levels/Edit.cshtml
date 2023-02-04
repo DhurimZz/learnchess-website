@@ -1,0 +1,28 @@
+﻿@model learnchess.Models.Levels
+
+@{
+	ViewData["Title"] = "Edit";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Edit Levels</h1>
+<hr />
+<div class="row my-1">
+	<div class="col-md-4 bg-dark text-white">
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="Id" />
+			<div class="form-group">
+				<label asp-for="Level" class="control-label"></label>
+				<input asp-for="Level" class="form-control" />
+				<span asp-validation-for="Level" class="text-danger"></span>
+			</div>
+			<div class="form-group my-2">
+				<input type="submit" value="Save" class="btn btn-outline-info" />
+			</div>
+			<div class="my-2">
+				<a asp-action="Index" type="button" class="btn btn-outline-warning">Back to List</a>
+			</div>
+		</form>
+	</div>
+</div>
