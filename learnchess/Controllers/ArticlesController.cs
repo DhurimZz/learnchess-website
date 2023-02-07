@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using learnchess.Areas.Identity.Data;
 using learnchess.Models;
-
 namespace learnchess.Controllers
 {
     public class ArticlesController : Controller
@@ -18,19 +17,37 @@ namespace learnchess.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> ArticlePage()
+        public async Task<IActionResult> ArticlePage(string sortOrder, string searchString)
         {
-            return View( await _context.Article.ToListAsync());
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+
+            var articles = from a in _context.Article
+                           select a;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                articles = articles.Where(a => a.Title.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    articles = articles.OrderByDescending(a => a.Title);
+                    break;
+                default:
+                    articles = articles.OrderBy(a => a.Title);
+                    break;
+            }
+            return View(await articles.AsNoTracking().ToListAsync());
         }
 
         // GET: Articles
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Article.ToListAsync());
+            return View(await _context.Article.ToListAsync());
         }
 
         // GET: Articles/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null || _context.Article == null)
             {
@@ -50,6 +67,8 @@ namespace learnchess.Controllers
         // GET: Articles/Create
         public IActionResult Create()
         {
+            var authors = _context.authors.ToList();
+            ViewBag.Authors = authors;
             return View();
         }
 
@@ -58,10 +77,15 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ArticleId,Photo,Title,Description,url")] Article article)
+        public async Task<IActionResult> Create([Bind("ArticleId,Photo,Title,Description,url,AuthorId")] Article article)
         {
+
             if (ModelState.IsValid)
             {
+                article.ArticleId = Guid.NewGuid().ToString();
+                var a = await _context.authors.FindAsync(article.AuthorId);
+                article.AuthorId = a.AuthorId;
+                article.Author = a;
                 if (Request.Form.Files.Count > 0)
                 {
                     IFormFile file = Request.Form.Files.FirstOrDefault();
@@ -79,8 +103,10 @@ namespace learnchess.Controllers
         }
 
         // GET: Articles/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
+            var authors = _context.authors.ToList();
+            ViewBag.Authors = authors;
             if (id == null || _context.Article == null)
             {
                 return NotFound();
@@ -99,7 +125,7 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ArticleId,Photo,Title,Description,url")] Article article)
+        public async Task<IActionResult> Edit(string id, [Bind("ArticleId,Photo,Title,Description,url,AuthorId")] Article article)
         {
             if (id != article.ArticleId)
             {
@@ -110,6 +136,9 @@ namespace learnchess.Controllers
             {
                 try
                 {
+                    var a = await _context.authors.FindAsync(article.AuthorId);
+                    article.AuthorId = a.AuthorId;
+                    article.Author = a;
                     if (Request.Form.Files.Count > 0)
                     {
                         IFormFile file = Request.Form.Files.FirstOrDefault();
@@ -139,7 +168,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Articles/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null || _context.Article == null)
             {
@@ -159,7 +188,7 @@ namespace learnchess.Controllers
         // POST: Articles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.Article == null)
             {
@@ -170,14 +199,14 @@ namespace learnchess.Controllers
             {
                 _context.Article.Remove(article);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ArticleExists(int id)
+        private bool ArticleExists(string id)
         {
-          return _context.Article.Any(e => e.ArticleId == id);
+            return _context.Article.Any(e => e.ArticleId == id);
         }
     }
 }
