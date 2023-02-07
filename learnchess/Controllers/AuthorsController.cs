@@ -26,7 +26,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Authors/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null || _context.authors == null)
             {
@@ -58,6 +58,7 @@ namespace learnchess.Controllers
         {
             if (ModelState.IsValid)
             {
+                author.AuthorId = Guid.NewGuid().ToString();
                 _context.Add(author);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -66,7 +67,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Authors/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null || _context.authors == null)
             {
@@ -86,7 +87,7 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AuthorId,Name,SurName")] Author author)
+        public async Task<IActionResult> Edit(string id, [Bind("AuthorId,Name,SurName")] Author author)
         {
             if (id != author.AuthorId)
             {
@@ -117,7 +118,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Authors/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null || _context.authors == null)
             {
@@ -137,7 +138,7 @@ namespace learnchess.Controllers
         // POST: Authors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.authors == null)
             {
@@ -153,7 +154,7 @@ namespace learnchess.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AuthorExists(int id)
+        private bool AuthorExists(string id)
         {
           return _context.authors.Any(e => e.AuthorId == id);
         }
