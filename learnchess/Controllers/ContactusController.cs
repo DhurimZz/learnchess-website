@@ -58,6 +58,7 @@ namespace learnchess.Controllers
         {
             if (ModelState.IsValid)
             {
+                contactus.id = Guid.NewGuid().ToString();
                 _context.Add(contactus);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -3,7 +3,7 @@ using learnchess.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using learnchess.Models;
+
 
 namespace learnchess.Areas.Identity.Data;
 
@@ -19,10 +19,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         base.OnModelCreating(builder);
         builder.HasDefaultSchema("Identity");
-        builder.Entity<IdentityUser>(entity =>
-        {
-            entity.ToTable(name: "User");
-        });
         builder.Entity<IdentityRole>(entity =>
         {
             entity.ToTable(name: "Role");

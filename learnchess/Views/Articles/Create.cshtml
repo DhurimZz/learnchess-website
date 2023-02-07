@@ -1,4 +1,5 @@
-﻿@model learnchess.Models.Article
+﻿@model ViewModel
+@using learnchess.Models
 
 @{
     ViewData["Title"] = "Create";
@@ -14,30 +15,36 @@
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="Article.Title" class="control-label"></label>
+                <input asp-for="Article.Title" class="form-control" />
+                <span asp-validation-for="Article.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Article.Description" class="control-label"></label>
+                <input asp-for="Article.Description" class="form-control" />
+                <span asp-validation-for="Article.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="url" class="control-label"></label>
-                <input asp-for="url" class="form-control" />
-                <span asp-validation-for="url" class="text-danger"></span>
+                <label asp-for="Article.url" class="control-label"></label>
+                <input asp-for="Article.url" class="form-control" />
+                <span asp-validation-for="Article.url" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <label asp-for="Author.AuthorId" class="control-label">Author</label>
+                <select asp-for="Author.AuthorId" asp-items="ViewBag.authors">
+                    <option>Please select one</option>
+                </select>
             </div>
             <div class="form-group">
-                <label asp-for="Photo" style="width: 100%;"></label>
+                <label asp-for="Article.Photo" style="width: 100%;"></label>
                     <img id="photo" style="width:350px;height:350px; object-fit:cover" src="">
                 <input type="file"
                        accept=".png,.jpg,.jpeg,.gif,.tif"
-                       asp-for="Photo"
+                       asp-for="Article.Photo"
                        class="form-control"
                        style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
                        onchange="document.getElementById('photo').src = window.URL.createObjectURL(this.files[0])" />
-                <span asp-validation-for="Photo" class="text-danger"></span>
+                <span asp-validation-for="Article.Photo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

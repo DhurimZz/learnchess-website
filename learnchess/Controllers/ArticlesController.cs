@@ -48,7 +48,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Articles/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null || _context.Article == null)
             {
@@ -76,10 +76,15 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ArticleId,Photo,Title,Description,url")] Article article)
+        public async Task<IActionResult> Create([Bind("ArticleId,Photo,Title,Description,url,AuthorId")] Article article)
         {
             if (ModelState.IsValid)
             {
+                var a = await _context.authors.FindAsync(article.AuthorId);
+                var authors = _context.authors.ToList();
+                ViewBag.authors = new SelectList(authors, "AuthorId", "Name");
+                article.AuthorId = a.AuthorId;
+                article.Author = a;
                 if (Request.Form.Files.Count > 0)
                 {
                     IFormFile file = Request.Form.Files.FirstOrDefault();
@@ -117,7 +122,7 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ArticleId,Photo,Title,Description,url")] Article article)
+        public async Task<IActionResult> Edit(string id, [Bind("ArticleId,Photo,Title,Description,url")] Article article)
         {
             if (id != article.ArticleId)
             {
@@ -157,7 +162,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Articles/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null || _context.Article == null)
             {
@@ -177,7 +182,7 @@ namespace learnchess.Controllers
         // POST: Articles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.Article == null)
             {
@@ -193,7 +198,7 @@ namespace learnchess.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ArticleExists(int id)
+        private bool ArticleExists(string id)
         {
           return _context.Article.Any(e => e.ArticleId == id);
         }
