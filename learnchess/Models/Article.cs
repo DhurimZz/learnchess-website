@@ -8,6 +8,6 @@
         public string Description { get; set; }
         public string url { get; set; }
         public string? AuthorId { get; set; }
-        public Author Author { get; set; }
+        public Author? Author { get; set; }
     }
 }
