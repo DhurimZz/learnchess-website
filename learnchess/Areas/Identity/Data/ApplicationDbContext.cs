@@ -55,4 +55,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<learnchess.Models.Videos> Videos { get; set; }
 
     public DbSet<learnchess.Models.Levels> Levels { get; set; }
+
+    public DbSet<learnchess.Models.Games> Games { get; set; }
 }
