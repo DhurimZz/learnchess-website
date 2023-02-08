@@ -19,10 +19,20 @@ namespace learnchess.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> ArticlePage(string sortOrder, string searchString)
+        public async Task<IActionResult> ArticlePage(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
+            ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["CurrentFilter"] = searchString;
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
 
             var articles = from a in _context.Article
                            select a;
@@ -39,7 +49,8 @@ namespace learnchess.Controllers
                     articles = articles.OrderBy(a => a.Title);
                     break;
             }
-            return View(await articles.AsNoTracking().ToListAsync());
+            int pageSize = 6;
+            return View(await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Articles
@@ -74,7 +85,7 @@ namespace learnchess.Controllers
                     articles = articles.OrderBy(a => a.Title);
                     break;
             }
-            int pageSize = 3;
+            int pageSize = 5;
             return View(await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 

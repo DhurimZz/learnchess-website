@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using learnchess.Areas.Identity.Data;
 using learnchess.Models;
+using ContosoUniversity;
 
 namespace learnchess.Controllers
 {
@@ -20,9 +21,38 @@ namespace learnchess.Controllers
         }
 
         // GET: Authors
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            return View(await _context.authors.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            var authors = from a in _context.authors
+                          select a;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                authors = authors.Where(a => a.Name.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    authors = authors.OrderByDescending(a => a.Name);
+                    break;
+                default:
+                    authors = authors.OrderBy(a => a.Name);
+                    break;
+            }
+            int pageSize = 5;
+            return View(await PaginatedList<Author>.CreateAsync(authors.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Authors/Details/5
@@ -149,14 +179,14 @@ namespace learnchess.Controllers
             {
                 _context.authors.Remove(author);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool AuthorExists(string id)
         {
-          return _context.authors.Any(e => e.AuthorId == id);
+            return _context.authors.Any(e => e.AuthorId == id);
         }
     }
 }
