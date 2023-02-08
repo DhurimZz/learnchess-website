@@ -70,20 +70,6 @@ namespace learnchess.Migrations
                 {
                     table.PrimaryKey("PK_Contactus", x => x.id);
                 });
-
-            migrationBuilder.CreateTable(
-                name: "Language",
-                schema: "Identity",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Language = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Language", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Role",
                 schema: "Identity",
@@ -300,10 +286,6 @@ namespace learnchess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Contactus",
-                schema: "Identity");
-
-            migrationBuilder.DropTable(
-                name: "Language",
                 schema: "Identity");
 
             migrationBuilder.DropTable(

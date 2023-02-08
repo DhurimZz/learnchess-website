@@ -1,0 +1,32 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace learnchess.Migrations
+{
+    public partial class Levels : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: "Levels",
+                schema: "Identity",
+                columns: table => new
+                {
+                    LevelId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Level = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Levels", x => x.LevelId);
+                });
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "Levels",
+                schema: "Identity");
+        }
+    }
+}

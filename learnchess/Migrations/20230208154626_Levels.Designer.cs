@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using learnchess.Areas.Identity.Data;
 
@@ -11,9 +12,10 @@ using learnchess.Areas.Identity.Data;
 namespace learnchess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230208154626_Levels")]
+    partial class Levels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,12 +117,6 @@ namespace learnchess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LanguageId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LevelId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<byte[]>("Photo")
                         .HasColumnType("varbinary(max)");
 
@@ -135,10 +131,6 @@ namespace learnchess.Migrations
                     b.HasKey("ArticleId");
 
                     b.HasIndex("AuthorId");
-
-                    b.HasIndex("LanguageId");
-
-                    b.HasIndex("LevelId");
 
                     b.ToTable("Article", "Identity");
                 });
@@ -378,19 +370,7 @@ namespace learnchess.Migrations
                         .WithMany("Article")
                         .HasForeignKey("AuthorId");
 
-                    b.HasOne("learnchess.Models.Languages", "Language")
-                        .WithMany("Article")
-                        .HasForeignKey("LanguageId");
-
-                    b.HasOne("learnchess.Models.Levels", "Level")
-                        .WithMany("Article")
-                        .HasForeignKey("LevelId");
-
                     b.Navigation("Author");
-
-                    b.Navigation("Language");
-
-                    b.Navigation("Level");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -445,16 +425,6 @@ namespace learnchess.Migrations
                 });
 
             modelBuilder.Entity("learnchess.Models.Author", b =>
-                {
-                    b.Navigation("Article");
-                });
-
-            modelBuilder.Entity("learnchess.Models.Languages", b =>
-                {
-                    b.Navigation("Article");
-                });
-
-            modelBuilder.Entity("learnchess.Models.Levels", b =>
                 {
                     b.Navigation("Article");
                 });

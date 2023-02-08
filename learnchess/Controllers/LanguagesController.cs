@@ -34,7 +34,7 @@ namespace learnchess.Controllers
             }
 
             var languages = await _context.Language
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.LanguageId == id);
             if (languages == null)
             {
                 return NotFound();
@@ -54,10 +54,11 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Language")] Languages languages)
+        public async Task<IActionResult> Create([Bind("LanguageId,Language")] Languages languages)
         {
             if (ModelState.IsValid)
             {
+                languages.LanguageId = Guid.NewGuid().ToString();
                 _context.Add(languages);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,9 +87,9 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Language")] Languages languages)
+        public async Task<IActionResult> Edit(string id, [Bind("LanguageId,Language")] Languages languages)
         {
-            if (id != languages.Id)
+            if (id != languages.LanguageId)
             {
                 return NotFound();
             }
@@ -102,7 +103,7 @@ namespace learnchess.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LanguagesExists(languages.Id))
+                    if (!LanguagesExists(languages.LanguageId))
                     {
                         return NotFound();
                     }
@@ -125,7 +126,7 @@ namespace learnchess.Controllers
             }
 
             var languages = await _context.Language
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.LanguageId == id);
             if (languages == null)
             {
                 return NotFound();
@@ -155,7 +156,7 @@ namespace learnchess.Controllers
 
         private bool LanguagesExists(string id)
         {
-          return _context.Language.Any(e => e.Id == id);
+          return _context.Language.Any(e => e.LanguageId == id);
         }
     }
 }

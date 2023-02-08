@@ -12,8 +12,8 @@ using learnchess.Areas.Identity.Data;
 namespace learnchess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230203180645_Levels")]
-    partial class Levels
+    [Migration("20230208153117_language")]
+    partial class language
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -107,11 +107,11 @@ namespace learnchess.Migrations
 
             modelBuilder.Entity("learnchess.Models.Article", b =>
                 {
-                    b.Property<int>("ArticleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("ArticleId")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArticleId"), 1L, 1);
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -130,16 +130,15 @@ namespace learnchess.Migrations
 
                     b.HasKey("ArticleId");
 
+                    b.HasIndex("AuthorId");
+
                     b.ToTable("Article", "Identity");
                 });
 
             modelBuilder.Entity("learnchess.Models.Author", b =>
                 {
-                    b.Property<int>("AuthorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuthorId"), 1L, 1);
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -178,14 +177,14 @@ namespace learnchess.Migrations
 
             modelBuilder.Entity("learnchess.Models.Languages", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("LanguageId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Language")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("LanguageId");
 
                     b.ToTable("Language", "Identity");
                 });
@@ -287,58 +286,6 @@ namespace learnchess.Migrations
                     b.ToTable("RoleClaims", "Identity");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User", "Identity");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -420,6 +367,15 @@ namespace learnchess.Migrations
                     b.ToTable("UserTokens", "Identity");
                 });
 
+            modelBuilder.Entity("learnchess.Models.Article", b =>
+                {
+                    b.HasOne("learnchess.Models.Author", "Author")
+                        .WithMany("Article")
+                        .HasForeignKey("AuthorId");
+
+                    b.Navigation("Author");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -469,6 +425,11 @@ namespace learnchess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("learnchess.Models.Author", b =>
+                {
+                    b.Navigation("Article");
                 });
 #pragma warning restore 612, 618
         }

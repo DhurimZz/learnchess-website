@@ -1,8 +1,13 @@
-﻿namespace learnchess.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace learnchess.Models
 {
     public class Levels
     {
-        public int Id { get; set; }
+        [Key]
+        public string? LevelId { get; set; }
         public string Level { get; set; }
+        public ICollection<Article>? Article { get; set; }
+
     }
 }
