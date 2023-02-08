@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using learnchess.Areas.Identity.Data;
 using learnchess.Models;
+using ContosoUniversity;
+
 namespace learnchess.Controllers
 {
     public class ArticlesController : Controller
@@ -41,9 +43,39 @@ namespace learnchess.Controllers
         }
 
         // GET: Articles
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder,string currentFilter,string searchString,int? pageNumber)
         {
-            return View(await _context.Article.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            var articles = from a in _context.Article
+                           select a;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                articles = articles.Where(a => a.Title.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    articles = articles.OrderByDescending(a => a.Title);
+                    break;
+                default:
+                    articles = articles.OrderBy(a => a.Title);
+                    break;
+            }
+            int pageSize = 3;
+            return View(await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Articles/Details/5
