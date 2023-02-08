@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace learnchess.Migrations
 {
-    public partial class initalltables : Migration
+    public partial class initAlltables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -71,6 +71,20 @@ namespace learnchess.Migrations
                     table.PrimaryKey("PK_Contactus", x => x.id);
                 });
             migrationBuilder.CreateTable(
+                name: "Levels",
+                schema: "Identity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Level = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Levels", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Role",
                 schema: "Identity",
                 columns: table => new
@@ -83,6 +97,23 @@ namespace learnchess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Role", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Videos",
+                schema: "Identity",
+                columns: table => new
+                {
+                    VideosId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Video = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Videos", x => x.VideosId);
                 });
 
             migrationBuilder.CreateTable(
@@ -306,6 +337,10 @@ namespace learnchess.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserTokens",
+                schema: "Identity");
+
+            migrationBuilder.DropTable(
+                name: "Videos",
                 schema: "Identity");
 
             migrationBuilder.DropTable(

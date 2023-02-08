@@ -12,8 +12,13 @@ using learnchess.Areas.Identity.Data;
 namespace learnchess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<<< HEAD:learnchess/Migrations/20230208153117_language.Designer.cs
     [Migration("20230208153117_language")]
     partial class language
+========
+    [Migration("20230208133812_init Alltables")]
+    partial class initAlltables
+>>>>>>>> master:learnchess/Migrations/20230208133812_init Alltables.Designer.cs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -173,6 +178,30 @@ namespace learnchess.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Contactus", "Identity");
+                });
+
+            modelBuilder.Entity("learnchess.Models.Games", b =>
+                {
+                    b.Property<int>("GamesId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GamesId"), 1L, 1);
+
+                    b.Property<byte[]>("Thumbnail")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("GamesId");
+
+                    b.ToTable("Games", "Identity");
                 });
 
             modelBuilder.Entity("learnchess.Models.Languages", b =>
