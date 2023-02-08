@@ -1,0 +1,35 @@
+﻿@model IEnumerable<learnchess.Models.Games>
+
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "Games Page";
+}
+
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+
+<body class="bg-secondary">
+	<h1 class="text-light">Chess Games</h1>
+
+	<div class="row row-cols-1 row-cols-md-3 g-4">
+		@foreach (var Games in Model)
+		{
+				<div class="col">
+					<div class="card bg-dark">
+					@if (Games.Thumbnail != null)
+					{
+								<div class="card bg-dark">
+									<img id="photo" class="card-img-top" alt="..." style="object-fit:cover; height:21rem;width:100%;" src="data:image/*;base64,@(Convert.ToBase64String(Games.Thumbnail))">
+								</div>
+					}
+
+						<div class="card-body">
+							<h5 class="card-title text-warning">@Html.DisplayFor(modelItem => Games.Title)</h5>
+							<a class="btn btn-danger" href="@Html.DisplayFor(modelItem => Games.Url)"><i class="fas fa-play me-2"></i>Watch Video</a>
+						</div>
+					</div>
+				</div>
+		}
+	</div>
+</body>
