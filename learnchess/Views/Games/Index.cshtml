@@ -26,23 +26,27 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Thumbnail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Url)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.GamesId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.GamesId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.GamesId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (item.Thumbnail != null)
+                    {
+                        <img style="width:150px;height:100px;" id="thumbnail" class="" alt="..." object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.Thumbnail))">
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Url)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.GamesId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.GamesId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.GamesId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
