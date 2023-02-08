@@ -26,7 +26,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Levels/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null || _context.Levels == null)
             {
@@ -34,7 +34,7 @@ namespace learnchess.Controllers
             }
 
             var levels = await _context.Levels
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.LevelId == id);
             if (levels == null)
             {
                 return NotFound();
@@ -54,10 +54,11 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Level")] Levels levels)
+        public async Task<IActionResult> Create([Bind("LevelId,Level")] Levels levels)
         {
             if (ModelState.IsValid)
             {
+                levels.LevelId = Guid.NewGuid().ToString(); 
                 _context.Add(levels);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -66,7 +67,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Levels/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null || _context.Levels == null)
             {
@@ -86,9 +87,9 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Level")] Levels levels)
+        public async Task<IActionResult> Edit(string id, [Bind("LevelId,Level")] Levels levels)
         {
-            if (id != levels.Id)
+            if (id != levels.LevelId)
             {
                 return NotFound();
             }
@@ -102,7 +103,7 @@ namespace learnchess.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LevelsExists(levels.Id))
+                    if (!LevelsExists(levels.LevelId))
                     {
                         return NotFound();
                     }
@@ -117,7 +118,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Levels/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null || _context.Levels == null)
             {
@@ -125,7 +126,7 @@ namespace learnchess.Controllers
             }
 
             var levels = await _context.Levels
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.LevelId == id);
             if (levels == null)
             {
                 return NotFound();
@@ -137,7 +138,7 @@ namespace learnchess.Controllers
         // POST: Levels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.Levels == null)
             {
@@ -153,9 +154,9 @@ namespace learnchess.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LevelsExists(int id)
+        private bool LevelsExists(string id)
         {
-          return _context.Levels.Any(e => e.Id == id);
+          return _context.Levels.Any(e => e.LevelId == id);
         }
     }
 }

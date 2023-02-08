@@ -31,6 +31,40 @@
             </div>
             <div class="form-group">
                 <div class="form-group">
+                    <label asp-for="LevelId" class="control-label">Level</label>
+                    <select asp-for="LevelId" class="form-control">
+                        <option value="">-- Select Level --</option>
+                        @if (ViewBag.Levels != null)
+                        {
+                            foreach (var level in ViewBag.Levels)
+                            {
+                                <option value="@level.LevelId">@level.Level</option>
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="LevelId" class="text-danger"></span>
+                </div>
+                <span asp-validation-for="LevelId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="form-group">
+                    <label asp-for="LanguageId" class="control-label">Language</label>
+                    <select asp-for="LanguageId" class="form-control">
+                        <option value="">-- Select Language --</option>
+                        @if (ViewBag.Languages != null)
+                        {
+                            foreach (var languages in ViewBag.Languages)
+                            {
+                                <option value="@languages.LanguageId">@languages.Language</option>
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="LanguageId" class="text-danger"></span>
+                </div>
+                <span asp-validation-for="LanguageId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="form-group">
                     <label asp-for="AuthorId" class="control-label">Author</label>
                     <select asp-for="AuthorId" class="form-control">
                         <option value="">-- Select an author --</option>

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using learnchess.Areas.Identity.Data;
 using learnchess.Models;
+using ContosoUniversity;
+
 namespace learnchess.Controllers
 {
     public class ArticlesController : Controller
@@ -17,13 +19,77 @@ namespace learnchess.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> ArticlePage(string sortOrder, string searchString)
+        public async Task<IActionResult> ArticlePage(string sortOrder, string currentFilter,string currentFilter1,string searchString,string selectString, int? pageNumber)
         {
+            var authors = _context.authors.ToList();
+            ViewBag.Authors = authors;
+
+            ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentFilter1"] = searchString;
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
 
             var articles = from a in _context.Article
                            select a;
+
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                articles = articles.Where(a => a.Title.Contains(searchString));
+            }
+
+            /*if (!String.IsNullOrEmpty(selectString))
+            {
+                articles = articles.Where(a => a.AuthorId == selectString)
+            .ToList();
+            }*/
+            
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                articles = articles.Where(a => a.Title.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    articles = articles.OrderByDescending(a => a.Title);
+                    break;
+                default:
+                    articles = articles.OrderBy(a => a.Title);
+                    break;
+            }
+            int pageSize = 6;
+            return View(await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), pageNumber ?? 1, pageSize));
+        }
+
+        // GET: Articles
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+        {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            var articles = from a in _context.Article
+                           select a;
+
             if (!String.IsNullOrEmpty(searchString))
             {
                 articles = articles.Where(a => a.Title.Contains(searchString));
@@ -37,13 +103,8 @@ namespace learnchess.Controllers
                     articles = articles.OrderBy(a => a.Title);
                     break;
             }
-            return View(await articles.AsNoTracking().ToListAsync());
-        }
-
-        // GET: Articles
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Article.ToListAsync());
+            int pageSize = 5;
+            return View(await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Articles/Details/5
@@ -69,6 +130,13 @@ namespace learnchess.Controllers
         {
             var authors = _context.authors.ToList();
             ViewBag.Authors = authors;
+
+            var levels = _context.Levels.ToList();
+            ViewBag.Levels = levels;
+
+            var languages = _context.Language.ToList();
+            ViewBag.Languages = languages;
+
             return View();
         }
 
@@ -77,7 +145,7 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ArticleId,Photo,Title,Description,url,AuthorId")] Article article)
+        public async Task<IActionResult> Create([Bind("ArticleId,LevelId,LanguageId,Photo,Title,Description,url,AuthorId")] Article article)
         {
 
             if (ModelState.IsValid)
@@ -86,6 +154,15 @@ namespace learnchess.Controllers
                 var a = await _context.authors.FindAsync(article.AuthorId);
                 article.AuthorId = a.AuthorId;
                 article.Author = a;
+
+                var lvl = await _context.Levels.FindAsync(article.LevelId);
+                article.LevelId = lvl.LevelId;
+                article.Level = lvl;
+
+                var l = await _context.Language.FindAsync(article.LanguageId);
+                article.LanguageId = l.LanguageId;
+                article.Language = l;
+
                 if (Request.Form.Files.Count > 0)
                 {
                     IFormFile file = Request.Form.Files.FirstOrDefault();
