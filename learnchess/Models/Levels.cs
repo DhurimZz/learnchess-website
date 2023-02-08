@@ -8,6 +8,7 @@ namespace learnchess.Models
         public string? LevelId { get; set; }
         public string Level { get; set; }
         public ICollection<Article>? Article { get; set; }
+        public ICollection<Videos>? Videos { get; set; }
 
     }
 }

@@ -9,6 +9,7 @@ namespace learnchess.Models
 
         public string Language { get; set; }
         public ICollection<Article>? Article { get; set; }
+        public ICollection<Videos>? Videos { get; set; }
 
     }
 }
