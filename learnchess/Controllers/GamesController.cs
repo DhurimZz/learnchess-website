@@ -18,6 +18,10 @@ namespace learnchess.Controllers
         {
             _context = context;
         }
+        public async Task<IActionResult> GamesPage()
+        {
+            return View(await _context.Games.ToListAsync());
+        }
 
         // GET: Games
         public async Task<IActionResult> Index()
@@ -58,6 +62,15 @@ namespace learnchess.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (Request.Form.Files.Count > 0)
+                {
+                    IFormFile file = Request.Form.Files.FirstOrDefault();
+                    using (var dataStream = new MemoryStream())
+                    {
+                        await file.CopyToAsync(dataStream);
+                        games.Thumbnail = dataStream.ToArray();
+                    }
+                }
                 _context.Add(games);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -97,6 +110,15 @@ namespace learnchess.Controllers
             {
                 try
                 {
+                    if (Request.Form.Files.Count > 0)
+                    {
+                        IFormFile file = Request.Form.Files.FirstOrDefault();
+                        using (var dataStream = new MemoryStream())
+                        {
+                            await file.CopyToAsync(dataStream);
+                            games.Thumbnail = dataStream.ToArray();
+                        }
+                    }
                     _context.Update(games);
                     await _context.SaveChangesAsync();
                 }
