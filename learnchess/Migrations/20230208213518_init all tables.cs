@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace learnchess.Migrations
 {
-    public partial class initAlltables : Migration
+    public partial class initalltables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -70,18 +70,47 @@ namespace learnchess.Migrations
                 {
                     table.PrimaryKey("PK_Contactus", x => x.id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Games",
+                schema: "Identity",
+                columns: table => new
+                {
+                    GamesId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Thumbnail = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Games", x => x.GamesId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Language",
+                schema: "Identity",
+                columns: table => new
+                {
+                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Language = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Language", x => x.LanguageId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Levels",
                 schema: "Identity",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LevelId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Level = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Levels", x => x.Id);
+                    table.PrimaryKey("PK_Levels", x => x.LevelId);
                 });
 
             migrationBuilder.CreateTable(
@@ -193,7 +222,9 @@ namespace learnchess.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     url = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    LevelId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -204,6 +235,18 @@ namespace learnchess.Migrations
                         principalSchema: "Identity",
                         principalTable: "authors",
                         principalColumn: "AuthorId");
+                    table.ForeignKey(
+                        name: "FK_Article_Language_LanguageId",
+                        column: x => x.LanguageId,
+                        principalSchema: "Identity",
+                        principalTable: "Language",
+                        principalColumn: "LanguageId");
+                    table.ForeignKey(
+                        name: "FK_Article_Levels_LevelId",
+                        column: x => x.LevelId,
+                        principalSchema: "Identity",
+                        principalTable: "Levels",
+                        principalColumn: "LevelId");
                 });
 
             migrationBuilder.CreateTable(
@@ -263,6 +306,18 @@ namespace learnchess.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Article_LanguageId",
+                schema: "Identity",
+                table: "Article",
+                column: "LanguageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Article_LevelId",
+                schema: "Identity",
+                table: "Article",
+                column: "LevelId");
+
+            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 schema: "Identity",
                 table: "AspNetUsers",
@@ -320,6 +375,10 @@ namespace learnchess.Migrations
                 schema: "Identity");
 
             migrationBuilder.DropTable(
+                name: "Games",
+                schema: "Identity");
+
+            migrationBuilder.DropTable(
                 name: "RoleClaims",
                 schema: "Identity");
 
@@ -345,6 +404,14 @@ namespace learnchess.Migrations
 
             migrationBuilder.DropTable(
                 name: "authors",
+                schema: "Identity");
+
+            migrationBuilder.DropTable(
+                name: "Language",
+                schema: "Identity");
+
+            migrationBuilder.DropTable(
+                name: "Levels",
                 schema: "Identity");
 
             migrationBuilder.DropTable(
