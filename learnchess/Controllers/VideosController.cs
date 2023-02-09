@@ -145,7 +145,7 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("VideosId,LevelId,LanguageId,Video,Title,Description,url,AuthorId")] Videos videos)
+        public async Task<IActionResult> Create([Bind("VideosId,LevelId,LanguageId,Video,Title,Description,Url,AuthorId")] Videos videos)
         {
 
             if (ModelState.IsValid)
@@ -162,6 +162,8 @@ namespace learnchess.Controllers
                 var l = await _context.Language.FindAsync(videos.LanguageId);
                 videos.LanguageId = l.LanguageId;
                 videos.Language = l;
+
+                videos.VideosId = Guid.NewGuid().ToString();
 
                 if (Request.Form.Files.Count > 0)
                 {
