@@ -145,7 +145,7 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ArticleId,LevelId,LanguageId,Photo,Title,Description,url,AuthorId")] Videos videos)
+        public async Task<IActionResult> Create([Bind("VideosId,LevelId,LanguageId,Video,Title,Description,url,AuthorId")] Videos videos)
         {
 
             if (ModelState.IsValid)
