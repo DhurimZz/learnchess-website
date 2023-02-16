@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using learnchess.Areas.Identity.Data;
 using learnchess.Models;
+using ContosoUniversity;
 
 namespace learnchess.Controllers
 {
@@ -20,9 +21,38 @@ namespace learnchess.Controllers
         }
 
         // GET: Levels
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-              return View(await _context.Levels.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "level_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            var levels = from a in _context.Levels
+                          select a;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                levels = levels.Where(a => a.Level.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "level_desc":
+                    levels = levels.OrderByDescending(a => a.Level);
+                    break;
+                default:
+                    levels = levels.OrderBy(a => a.Level);
+                    break;
+            }
+            int pageSize = 5;
+            return View(await PaginatedList<Levels>.CreateAsync(levels.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Levels/Details/5

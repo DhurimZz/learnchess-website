@@ -182,7 +182,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Videos/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             var authors = _context.authors.ToList();
             ViewBag.Authors = authors;
@@ -267,7 +267,7 @@ namespace learnchess.Controllers
         // POST: Videos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.Videos == null)
             {
