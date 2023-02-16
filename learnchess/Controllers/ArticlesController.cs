@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using learnchess.Areas.Identity.Data;
 using learnchess.Models;
 using ContosoUniversity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace learnchess.Controllers
 {
+    [Authorize(Roles = "Admin,Moderator,User")]
     public class ArticlesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,6 +21,7 @@ namespace learnchess.Controllers
         {
             _context = context;
         }
+
         public async Task<IActionResult> ArticlePage(string sortOrder, string currentFilter,string currentFilter1,string searchString,string selectString, int? pageNumber)
         {
             var authors = _context.authors.ToList();
@@ -72,6 +75,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Articles
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             ViewData["CurrentSort"] = sortOrder;
@@ -108,6 +112,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Articles/Details/5
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Details(string? id)
         {
             if (id == null || _context.Article == null)
@@ -145,6 +150,7 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Create([Bind("ArticleId,LevelId,LanguageId,Photo,Title,Description,url,AuthorId")] Article article)
         {
 
@@ -180,6 +186,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Articles/Edit/5
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Edit(string? id)
         {
             var authors = _context.authors.ToList();
@@ -202,6 +209,7 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Edit(string id, [Bind("ArticleId,Photo,Title,Description,url,AuthorId")] Article article)
         {
             if (id != article.ArticleId)
@@ -245,6 +253,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Articles/Delete/5
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Delete(string? id)
         {
             if (id == null || _context.Article == null)

@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using learnchess.Areas.Identity.Data;
 using learnchess.Models;
 using ContosoUniversity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace learnchess.Controllers
 {
+    [Authorize(Roles = "Admin,Moderator")]
     public class AuthorsController : Controller
     {
         private readonly ApplicationDbContext _context;

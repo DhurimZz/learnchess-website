@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using learnchess.Models;
 using learnchess.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace UserManagement.MVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserRolesController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
