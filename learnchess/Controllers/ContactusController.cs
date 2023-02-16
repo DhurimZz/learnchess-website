@@ -65,7 +65,7 @@ namespace learnchess.Controllers
                 contactus.id = Guid.NewGuid().ToString();
                 _context.Add(contactus);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Create));
             }
             return View(contactus);
         }

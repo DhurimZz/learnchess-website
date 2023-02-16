@@ -1,4 +1,5 @@
-﻿@model IEnumerable<learnchess.Models.Games>
+﻿@using ContosoUniversity
+@model PaginatedList<Games>
 
 @{
 	ViewData["Title"] = "Index";
@@ -10,19 +11,28 @@
 <p>
 	<a asp-action="Create" type="button" class="btn btn-outline-primary">Create New</a>
 </p>
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by title: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
 <div class="row">
 	<div class="col">
 		<table class="table table-dark table-hover rounded shadow-sm">
 			<thead>
 				<tr>
 					<th scope="col">
-						@Html.DisplayNameFor(model => model.Thumbnail)
+						Thumbnail
 					</th>
 					<th scope="col">
-						@Html.DisplayNameFor(model => model.Title)
+						 <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-decoration-none ">Title</a>
 					</th>
 					<th scope="col">
-						@Html.DisplayNameFor(model => model.Url)
+						Url
 					</th>
 					<th scope="col"></th>
 				</tr>
@@ -54,3 +64,22 @@
 		</table>
 	</div>
 </div>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

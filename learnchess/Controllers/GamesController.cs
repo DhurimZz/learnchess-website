@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using learnchess.Areas.Identity.Data;
 using learnchess.Models;
 using Microsoft.AspNetCore.Authorization;
+using ContosoUniversity;
 
 namespace learnchess.Controllers
 {
@@ -21,16 +22,93 @@ namespace learnchess.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> GamesPage()
+        public async Task<IActionResult> GamesPage(string sortOrder, string currentFilter, string currentFilter1, string searchString, string selectString, int? pageNumber)
         {
-            return View(await _context.Games.ToListAsync());
+            var authors = _context.authors.ToList();
+            ViewBag.Authors = authors;
+
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentFilter1"] = searchString;
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            var games = from a in _context.Games
+                           select a;
+
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                games = games.Where(a => a.Title.Contains(searchString));
+            }
+
+            /*if (!String.IsNullOrEmpty(selectString))
+            {
+                articles = articles.Where(a => a.AuthorId == selectString)
+            .ToList();
+            }*/
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                games = games.Where(a => a.Title.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    games = games.OrderByDescending(a => a.Title);
+                    break;
+                default:
+                    games = games.OrderBy(a => a.Title);
+                    break;
+            }
+            int pageSize = 6;
+            return View(await PaginatedList<Games>.CreateAsync(games.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Games
         [Authorize(Roles = "Admin,Moderator")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-              return View(await _context.Games.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            var games = from a in _context.Games
+                           select a;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                games = games.Where(a => a.Title.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    games = games.OrderByDescending(a => a.Title);
+                    break;
+                default:
+                    games = games.OrderBy(a => a.Title);
+                    break;
+            }
+            int pageSize = 5;
+            return View(await PaginatedList<Games>.CreateAsync(games.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Games/Details/5
