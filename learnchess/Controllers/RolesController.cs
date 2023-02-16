@@ -9,6 +9,8 @@ using learnchess.Areas.Identity.Data;
 using learnchess.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using ContosoUniversity;
+
 
 namespace learnchess.Controllers
 {
@@ -22,9 +24,38 @@ namespace learnchess.Controllers
 
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            return View(await _context.Roles.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "role_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            var roles = from a in _context.Roles
+                        select a;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                roles = roles.Where(a => a.Name.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "level_desc":
+                    roles = roles.OrderByDescending(a => a.Name);
+                    break;
+                default:
+                    roles = roles.OrderBy(a => a.Name);
+                    break;
+            }
+            int pageSize = 5;
+            return View(await PaginatedList<IdentityRole>.CreateAsync(roles.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

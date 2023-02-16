@@ -1,9 +1,21 @@
-﻿@model List<Microsoft.AspNetCore.Identity.IdentityRole>
+﻿@using ContosoUniversity
+@model PaginatedList<Microsoft.AspNetCore.Identity.IdentityRole>
 @{
 	ViewData["Title"] = "Roles Menager";
 	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <h1>Role Menager</h1>
+<hr />
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+<hr />
 <form method="post" asp-action="AddRole" asp-controller="Roles">
 	<div class="input-group">
 		<input name="roleName" class="form-control w-25">
@@ -17,7 +29,9 @@
 		<thead>
 			<tr>
 				<th scope="col">Id</th>
-				<th scope="col">Name</th>
+				<th scope="col">
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-decoration-none ">Roles</a>
+                    </th>
 				<th scope="col">Action</th>
 			</tr>
 		</thead>
@@ -33,3 +47,21 @@
 		</tbody>
 	</table>
 </div>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

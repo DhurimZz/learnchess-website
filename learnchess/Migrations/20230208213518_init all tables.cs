@@ -128,22 +128,7 @@ namespace learnchess.Migrations
                     table.PrimaryKey("PK_Role", x => x.Id);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Videos",
-                schema: "Identity",
-                columns: table => new
-                {
-                    VideosId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Video = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Videos", x => x.VideosId);
-                });
+   
 
             migrationBuilder.CreateTable(
                 name: "UserClaims",
@@ -398,9 +383,7 @@ namespace learnchess.Migrations
                 name: "UserTokens",
                 schema: "Identity");
 
-            migrationBuilder.DropTable(
-                name: "Videos",
-                schema: "Identity");
+            
 
             migrationBuilder.DropTable(
                 name: "authors",

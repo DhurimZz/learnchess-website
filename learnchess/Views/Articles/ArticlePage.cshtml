@@ -1,77 +1,77 @@
 ﻿@using ContosoUniversity
 @model PaginatedList<Article>
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Article Page";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "Article Page";
 }
 
 <body class="bg-secondary">
-    <h1>Articles</h1>
-    <form asp-action="ArticlePage" method="get">
-        <div class="d-flex">
-            <div class="form-actions no-color me-2">
-                <p>
-                    Find by title: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-                </p>
-            </div>
-            <div class="form-actions no-color me-2">
-                <select class="form-control">
-                    <option value="">-- Select an author --</option>
-                    @if (ViewBag.Authors != null)
-                    {
-                        foreach (var author in ViewBag.Authors)
-                        {
-                            <option value="@author.AuthorId">@author.Name</option>
-                        }
-                    }
-                </select>
-            </div>
-            <div class="me-2">
-                <input type="submit" value="Search" class="btn btn-success" /> |
-                <a asp-action="ArticlePage" class="btn-link btn">Back to Full List</a>
-            </div>
-        </div>
-    </form>
-    <div class="row row-cols-1 row-cols-md-2 g-4 ">
-        @foreach (var article in Model)
-        {
-            <div class="col">
-                <div class="card">
-                    @if (article.Photo != null)
-                    {
-                        <div><img id="photo" class="card-img-top" alt="..." style="object-fit:cover; height:21rem;width:100%;" src="data:image/*;base64,@(Convert.ToBase64String(article.Photo))"></div>
-                    }
-                    <div class="card-body">
-                        <h5 class="card-title">@Html.DisplayFor(modelItem => article.Title)</h5>
-                        <p class="card-text">@Html.DisplayFor(modelItem => article.Description)</p>
-                        <a class="btn btn-info" href="@Html.DisplayFor(modelItem => article.url)">Read More</a>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
+	<h1>Articles</h1>
+	<form asp-action="ArticlePage" method="get">
+		<div class="d-flex">
+			<div class="form-actions no-color me-2">
+				<p>
+					Find by title: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+				</p>
+			</div>
+			<div class="form-actions no-color me-2">
+				<select class="form-control">
+					<option value="">-- Select an author --</option>
+					@if (ViewBag.Authors != null)
+					{
+						foreach (var author in ViewBag.Authors)
+						{
+							<option value="@author.AuthorId">@author.Name</option>
+						}
+					}
+				</select>
+			</div>
+			<div class="me-2">
+				<input type="submit" value="Search" class="btn btn-success" /> |
+				<a asp-action="ArticlePage" class="btn-link btn">Back to Full List</a>
+			</div>
+		</div>
+	</form>
+	<div class="row row-cols-1 row-cols-md-2 g-4 ">
+		@foreach (var article in Model)
+		{
+			<div class="col">
+				<div class="card">
+					@if (article.Photo != null)
+					{
+						<div><img id="photo" class="card-img-top" alt="..." style="object-fit:cover; height:21rem;width:100%;" src="data:image/*;base64,@(Convert.ToBase64String(article.Photo))"></div>
+					}
+					<div class="card-body">
+						<h5 class="card-title">@Html.DisplayFor(modelItem => article.Title)</h5>
+						<p class="card-text">@Html.DisplayFor(modelItem => article.Description)</p>
+						<a class="btn btn-info" href="@Html.DisplayFor(modelItem => article.url)">Read More</a>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
 </body>
 @{
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+	var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+	var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 <div class="mt-3 d-flex mb-3">
-    <div class="me-2">
-        <a asp-action="ArticlePage"
-           asp-route-sortOrder="@ViewData["CurrentSort"]"
-           asp-route-pageNumber="@(Model.PageIndex - 1)"
-           asp-route-currentFilter="@ViewData["CurrentFilter"]"
-           class="btn btn-primary @prevDisabled">
-            Previous
-        </a>
-    </div>
-    <div></div>
-    <a asp-action="ArticlePage"
-       asp-route-sortOrder="@ViewData["CurrentSort"]"
-       asp-route-pageNumber="@(Model.PageIndex + 1)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       class="btn btn-primary @nextDisabled">
-        Next
-    </a>
-</div>
+	<div class="me-2">
+		<a asp-action="ArticlePage"
+		   asp-route-sortOrder="@ViewData["CurrentSort"]"
+		   asp-route-pageNumber="@(Model.PageIndex - 1)"
+		   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+		   class="btn btn-primary @prevDisabled">
+			Previous
+		</a>
+	</div>
+	<div>
+		<a asp-action="ArticlePage"
+		   asp-route-sortOrder="@ViewData["CurrentSort"]"
+		   asp-route-pageNumber="@(Model.PageIndex + 1)"
+		   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+		   class="btn btn-primary @nextDisabled">
+			Next
+		</a>
+	</div>
 </div>

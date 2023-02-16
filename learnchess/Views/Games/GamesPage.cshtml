@@ -15,21 +15,21 @@
 	<div class="row row-cols-1 row-cols-md-3 g-4">
 		@foreach (var Games in Model)
 		{
-				<div class="col">
-					<div class="card bg-dark">
+			<div class="col">
+				<div class="card">
 					@if (Games.Thumbnail != null)
 					{
-								<div class="card bg-dark">
-									<img id="photo" class="card-img-top" alt="..." style="object-fit:cover; height:21rem;width:100%;" src="data:image/*;base64,@(Convert.ToBase64String(Games.Thumbnail))">
-								</div>
+						<div class="card">
+							<img id="photo" class="card-img-top" alt="..." style="object-fit:cover; height:21rem;width:100%;" src="data:image/*;base64,@(Convert.ToBase64String(Games.Thumbnail))">
+						</div>
 					}
 
-						<div class="card-body">
-							<h5 class="card-title text-warning">@Html.DisplayFor(modelItem => Games.Title)</h5>
-							<a class="btn btn-danger" href="@Html.DisplayFor(modelItem => Games.Url)"><i class="fas fa-play me-2"></i>Watch Video</a>
-						</div>
+					<div class="card-body">
+						<h5 class="card-title text-black">@Html.DisplayFor(modelItem => Games.Title)</h5>
+						<a class="btn btn-info" href="@Html.DisplayFor(modelItem => Games.Url)"><i class="fas fa-play me-2"></i>See The Full Game</a>
 					</div>
 				</div>
+			</div>
 		}
 	</div>
 </body>

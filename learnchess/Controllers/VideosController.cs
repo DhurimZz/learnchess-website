@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using learnchess.Areas.Identity.Data;
 using learnchess.Models;
 using Microsoft.AspNetCore.Authorization;
+using ContosoUniversity;
+
 
 namespace learnchess.Controllers
 {
@@ -20,21 +22,103 @@ namespace learnchess.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> VideoPage()
+        public async Task<IActionResult> VideoPage(string sortOrder, string currentFilter, string currentFilter1, string searchString, string selectString, int? pageNumber)
         {
-            return View(await _context.Videos.ToListAsync());
+            var authors = _context.authors.ToList();
+            ViewBag.Authors = authors;
+
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentFilter1"] = searchString;
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            var videos = from v in _context.Videos
+                           select v;
+
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                videos = videos.Where(v => v.Title.Contains(searchString));
+            }
+
+            /*if (!String.IsNullOrEmpty(selectString))
+            {
+                videos = videos.Where(a => a.AuthorId == selectString)
+            .ToList();
+            }*/
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                videos = videos.Where(v => v.Title.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    videos = videos.OrderByDescending(v => v.Title);
+                    break;
+                default:
+                    videos = videos.OrderBy(v => v.Title);
+                    break;
+            }
+            int pageSize = 6;
+            return View(await PaginatedList<Videos>.CreateAsync(videos.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Videos
+
         [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+
         {
-              return View(await _context.Videos.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            var videos = from v in _context.Videos
+                           select v;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                videos = videos.Where(v => v.Title.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    videos = videos.OrderByDescending(v => v.Title);
+                    break;
+                default:
+                    videos = videos.OrderBy(v => v.Title);
+                    break;
+            }
+            int pageSize = 5;
+            return View(await PaginatedList<Videos>.CreateAsync(videos.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Videos/Details/5
         [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
+
         {
             if (id == null || _context.Videos == null)
             {
@@ -55,6 +139,15 @@ namespace learnchess.Controllers
         [Authorize(Roles = "Admin,Moderator")]
         public IActionResult Create()
         {
+            var videos = _context.authors.ToList();
+            ViewBag.Authors = videos;
+
+            var levels = _context.Levels.ToList();
+            ViewBag.Levels = levels;
+
+            var languages = _context.Language.ToList();
+            ViewBag.Languages = languages;
+
             return View();
         }
 
@@ -65,9 +158,28 @@ namespace learnchess.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Create([Bind("VideosId,Video,Title,Description,Url")] Videos videos)
+
+        public async Task<IActionResult> Create([Bind("VideosId,LevelId,LanguageId,Video,Title,Description,Url,AuthorId")] Videos videos)
+
         {
+
             if (ModelState.IsValid)
             {
+                videos.VideosId = Guid.NewGuid().ToString();
+                var a = await _context.authors.FindAsync(videos.AuthorId);
+                videos.AuthorId = a.AuthorId;
+                videos.Author = a;
+
+                var lvl = await _context.Levels.FindAsync(videos.LevelId);
+                videos.LevelId = lvl.LevelId;
+                videos.Level = lvl;
+
+                var l = await _context.Language.FindAsync(videos.LanguageId);
+                videos.LanguageId = l.LanguageId;
+                videos.Language = l;
+
+                videos.VideosId = Guid.NewGuid().ToString();
+
                 if (Request.Form.Files.Count > 0)
                 {
                     IFormFile file = Request.Form.Files.FirstOrDefault();
@@ -87,7 +199,11 @@ namespace learnchess.Controllers
         // GET: Videos/Edit/5
         [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
+
         {
+            var authors = _context.authors.ToList();
+            ViewBag.Authors = authors;
             if (id == null || _context.Videos == null)
             {
                 return NotFound();
@@ -106,8 +222,12 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Edit(int id, [Bind("VideosId,Video,Title,Description,Url")] Videos videos)
+
+        public async Task<IActionResult> Edit(string id, [Bind("VideosId,Video,Title,Description,Url")] Videos videos)
+
         {
             if (id != videos.VideosId)
             {
@@ -118,6 +238,9 @@ namespace learnchess.Controllers
             {
                 try
                 {
+                    var a = await _context.authors.FindAsync(videos.AuthorId);
+                    videos.AuthorId = a.AuthorId;
+                    videos.Author = a;
                     if (Request.Form.Files.Count > 0)
                     {
                         IFormFile file = Request.Form.Files.FirstOrDefault();
@@ -147,8 +270,12 @@ namespace learnchess.Controllers
         }
 
         // GET: Videos/Delete/5
+
         [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Delete(int? id)
+
+        public async Task<IActionResult> Delete(string? id)
+
         {
             if (id == null || _context.Videos == null)
             {
@@ -168,8 +295,11 @@ namespace learnchess.Controllers
         // POST: Videos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+
         [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
+
         {
             if (_context.Videos == null)
             {
@@ -185,7 +315,7 @@ namespace learnchess.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool VideosExists(int id)
+        private bool VideosExists(string id)
         {
           return _context.Videos.Any(e => e.VideosId == id);
         }

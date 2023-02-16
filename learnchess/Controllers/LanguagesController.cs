@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using learnchess.Areas.Identity.Data;
 using learnchess.Models;
 using Microsoft.AspNetCore.Authorization;
+using ContosoUniversity;
 
 namespace learnchess.Controllers
 {
@@ -22,9 +23,38 @@ namespace learnchess.Controllers
         }
 
         // GET: Languages
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-              return View(await _context.Language.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "language_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            var languages = from a in _context.Language
+                         select a;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                languages = languages.Where(a => a.Language.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "language_desc":
+                    languages = languages.OrderByDescending(a => a.Language);
+                    break;
+                default:
+                    languages = languages.OrderBy(a => a.Language);
+                    break;
+            }
+            int pageSize = 5;
+            return View(await PaginatedList<Languages>.CreateAsync(languages.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Languages/Details/5
