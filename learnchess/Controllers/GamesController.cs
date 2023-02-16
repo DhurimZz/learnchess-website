@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using learnchess.Areas.Identity.Data;
 using learnchess.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace learnchess.Controllers
 {
+    [Authorize(Roles = "Admin,Moderator,User")]
     public class GamesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,18 +20,21 @@ namespace learnchess.Controllers
         {
             _context = context;
         }
+
         public async Task<IActionResult> GamesPage()
         {
             return View(await _context.Games.ToListAsync());
         }
 
         // GET: Games
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index()
         {
               return View(await _context.Games.ToListAsync());
         }
 
         // GET: Games/Details/5
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Games == null)
@@ -48,6 +53,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Games/Create
+        [Authorize(Roles = "Admin,Moderator")]
         public IActionResult Create()
         {
             return View();
@@ -58,6 +64,7 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Create([Bind("GamesId,Thumbnail,Title,Url")] Games games)
         {
             if (ModelState.IsValid)
@@ -79,6 +86,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Games/Edit/5
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Games == null)
@@ -99,6 +107,7 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Edit(int id, [Bind("GamesId,Thumbnail,Title,Url")] Games games)
         {
             if (id != games.GamesId)
@@ -139,6 +148,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Games/Delete/5
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Games == null)
@@ -159,6 +169,7 @@ namespace learnchess.Controllers
         // POST: Games/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Games == null)

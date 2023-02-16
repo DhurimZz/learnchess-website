@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using learnchess.Areas.Identity.Data;
 using learnchess.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace learnchess.Controllers
 {
+    [Authorize(Roles = "Admin,Moderator,User")]
     public class ContactusController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,12 +22,14 @@ namespace learnchess.Controllers
         }
 
         // GET: Contactus
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index()
         {
               return View(await _context.Contactus.ToListAsync());
         }
 
         // GET: Contactus/Details/5
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.Contactus == null)
@@ -67,6 +71,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Contactus/Edit/5
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.Contactus == null)
@@ -87,6 +92,7 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Edit(string id, [Bind("id,name,email,Contact")] Contactus contactus)
         {
             if (id != contactus.id)
@@ -118,6 +124,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Contactus/Delete/5
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.Contactus == null)
@@ -138,6 +145,7 @@ namespace learnchess.Controllers
         // POST: Contactus/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.Contactus == null)
