@@ -77,7 +77,6 @@ namespace learnchess.Controllers
         // GET: Videos
 
         [Authorize(Roles = "Admin,Moderator")]
-        public async Task<IActionResult> Index()
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
 
         {
@@ -116,7 +115,6 @@ namespace learnchess.Controllers
 
         // GET: Videos/Details/5
         [Authorize(Roles = "Admin,Moderator")]
-        public async Task<IActionResult> Details(int? id)
         public async Task<IActionResult> Details(string? id)
 
         {
@@ -157,7 +155,6 @@ namespace learnchess.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Moderator")]
-        public async Task<IActionResult> Create([Bind("VideosId,Video,Title,Description,Url")] Videos videos)
 
         public async Task<IActionResult> Create([Bind("VideosId,LevelId,LanguageId,Video,Title,Description,Url,AuthorId")] Videos videos)
 
@@ -198,7 +195,6 @@ namespace learnchess.Controllers
 
         // GET: Videos/Edit/5
         [Authorize(Roles = "Admin,Moderator")]
-        public async Task<IActionResult> Edit(int? id)
         public async Task<IActionResult> Edit(string? id)
 
         {
@@ -224,7 +220,6 @@ namespace learnchess.Controllers
         [ValidateAntiForgeryToken]
 
         [Authorize(Roles = "Admin,Moderator")]
-        public async Task<IActionResult> Edit(int id, [Bind("VideosId,Video,Title,Description,Url")] Videos videos)
 
         public async Task<IActionResult> Edit(string id, [Bind("VideosId,Video,Title,Description,Url")] Videos videos)
 
@@ -272,7 +267,6 @@ namespace learnchess.Controllers
         // GET: Videos/Delete/5
 
         [Authorize(Roles = "Admin,Moderator")]
-        public async Task<IActionResult> Delete(int? id)
 
         public async Task<IActionResult> Delete(string? id)
 
@@ -297,7 +291,6 @@ namespace learnchess.Controllers
         [ValidateAntiForgeryToken]
 
         [Authorize(Roles = "Admin,Moderator")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
         public async Task<IActionResult> DeleteConfirmed(string id)
 
         {
