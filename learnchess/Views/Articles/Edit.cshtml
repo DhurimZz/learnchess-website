@@ -28,6 +28,11 @@
                 <label asp-for="url" class="control-label"></label>
                 <input asp-for="url" class="form-control" />
                 <span asp-validation-for="url" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <label asp-for="Photo" class="control-label"></label>
+                <input asp-for="Photo" class="form-control" />
+                <span asp-validation-for="Photo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="form-group">
@@ -45,24 +50,6 @@
                     <span asp-validation-for="AuthorId" class="text-danger"></span>
                 </div>
                 <span asp-validation-for="AuthorId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Photo" style="width: 100%;"></label>
-                @if (Model.Photo != null)
-                {
-                    <img id="photo" style="width:350px;height:350px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(Model.Photo))">
-                }
-                else
-                {
-                    <img id="photo" style="width:350px;height:350px; object-fit:cover" src="">
-                }
-                <input type="file"
-                       accept=".png,.jpg,.jpeg,.gif,.tif"
-                       asp-for="Photo"
-                       class="form-control"
-                       style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
-                       onchange="document.getElementById('photo').src = window.URL.createObjectURL(this.files[0])" />
-                <span asp-validation-for="Photo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

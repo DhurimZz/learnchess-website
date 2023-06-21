@@ -13,7 +13,6 @@ using ContosoUniversity;
 
 namespace learnchess.Controllers
 {
-    [Authorize(Roles = "Admin,Moderator,User")]
     public class VideosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -76,7 +75,6 @@ namespace learnchess.Controllers
 
         // GET: Videos
 
-        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
 
         {
@@ -114,7 +112,6 @@ namespace learnchess.Controllers
         }
 
         // GET: Videos/Details/5
-        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Details(string? id)
 
         {
@@ -134,7 +131,6 @@ namespace learnchess.Controllers
         }
 
         // GET: Videos/Create
-        [Authorize(Roles = "Admin,Moderator")]
         public IActionResult Create()
         {
             var videos = _context.authors.ToList();
@@ -154,7 +150,6 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Moderator")]
 
         public async Task<IActionResult> Create([Bind("VideosId,LevelId,LanguageId,Video,Title,Description,Url,AuthorId")] Videos videos)
 
@@ -177,15 +172,6 @@ namespace learnchess.Controllers
 
                 videos.VideosId = Guid.NewGuid().ToString();
 
-                if (Request.Form.Files.Count > 0)
-                {
-                    IFormFile file = Request.Form.Files.FirstOrDefault();
-                    using (var dataStream = new MemoryStream())
-                    {
-                        await file.CopyToAsync(dataStream);
-                        videos.Video = dataStream.ToArray();
-                    }
-                }
                 _context.Add(videos);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -194,7 +180,6 @@ namespace learnchess.Controllers
         }
 
         // GET: Videos/Edit/5
-        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Edit(string? id)
 
         {
@@ -219,7 +204,6 @@ namespace learnchess.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        [Authorize(Roles = "Admin,Moderator")]
 
         public async Task<IActionResult> Edit(string id, [Bind("VideosId,Video,Title,Description,Url")] Videos videos)
 
@@ -236,15 +220,7 @@ namespace learnchess.Controllers
                     var a = await _context.authors.FindAsync(videos.AuthorId);
                     videos.AuthorId = a.AuthorId;
                     videos.Author = a;
-                    if (Request.Form.Files.Count > 0)
-                    {
-                        IFormFile file = Request.Form.Files.FirstOrDefault();
-                        using (var dataStream = new MemoryStream())
-                        {
-                            await file.CopyToAsync(dataStream);
-                            videos.Video = dataStream.ToArray();
-                        }
-                    }
+                   
                     _context.Update(videos);
                     await _context.SaveChangesAsync();
                 }
@@ -266,7 +242,6 @@ namespace learnchess.Controllers
 
         // GET: Videos/Delete/5
 
-        [Authorize(Roles = "Admin,Moderator")]
 
         public async Task<IActionResult> Delete(string? id)
 
@@ -290,7 +265,6 @@ namespace learnchess.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
 
-        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> DeleteConfirmed(string id)
 
         {

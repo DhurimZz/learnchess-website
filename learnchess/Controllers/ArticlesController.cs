@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace learnchess.Controllers
 {
-    [Authorize(Roles = "Admin,Moderator,User")]
     public class ArticlesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -71,11 +70,12 @@ namespace learnchess.Controllers
                     break;
             }
             int pageSize = 6;
-            return View(await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), pageNumber ?? 1, pageSize));
+            var paginatedList = await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), pageNumber ?? 1, pageSize);
+            return Ok(paginatedList);
         }
 
         // GET: Articles
-        [Authorize(Roles = "Admin,Moderator")]
+        
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             ViewData["CurrentSort"] = sortOrder;
@@ -112,7 +112,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Articles/Details/5
-        [Authorize(Roles = "Admin,Moderator")]
+      
         public async Task<IActionResult> Details(string? id)
         {
             if (id == null || _context.Article == null)
@@ -150,7 +150,7 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Moderator")]
+      
         public async Task<IActionResult> Create([Bind("ArticleId,LevelId,LanguageId,Photo,Title,Description,url,AuthorId")] Article article)
         {
 
@@ -169,15 +169,6 @@ namespace learnchess.Controllers
                 article.LanguageId = l.LanguageId;
                 article.Language = l;
 
-                if (Request.Form.Files.Count > 0)
-                {
-                    IFormFile file = Request.Form.Files.FirstOrDefault();
-                    using (var dataStream = new MemoryStream())
-                    {
-                        await file.CopyToAsync(dataStream);
-                        article.Photo = dataStream.ToArray();
-                    }
-                }
                 _context.Add(article);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -186,7 +177,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Articles/Edit/5
-        [Authorize(Roles = "Admin,Moderator")]
+       
         public async Task<IActionResult> Edit(string? id)
         {
             var authors = _context.authors.ToList();
@@ -209,7 +200,7 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Moderator")]
+        
         public async Task<IActionResult> Edit(string id, [Bind("ArticleId,Photo,Title,Description,url,AuthorId")] Article article)
         {
             if (id != article.ArticleId)
@@ -224,15 +215,7 @@ namespace learnchess.Controllers
                     var a = await _context.authors.FindAsync(article.AuthorId);
                     article.AuthorId = a.AuthorId;
                     article.Author = a;
-                    if (Request.Form.Files.Count > 0)
-                    {
-                        IFormFile file = Request.Form.Files.FirstOrDefault();
-                        using (var dataStream = new MemoryStream())
-                        {
-                            await file.CopyToAsync(dataStream);
-                            article.Photo = dataStream.ToArray();
-                        }
-                    }
+
                     _context.Update(article);
                     await _context.SaveChangesAsync();
                 }
@@ -253,7 +236,7 @@ namespace learnchess.Controllers
         }
 
         // GET: Articles/Delete/5
-        [Authorize(Roles = "Admin,Moderator")]
+       
         public async Task<IActionResult> Delete(string? id)
         {
             if (id == null || _context.Article == null)
