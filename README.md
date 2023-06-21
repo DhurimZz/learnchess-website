@@ -1,4 +1,8 @@
-learnchess-website
+learnchess-website:
+-Krijimi i nje web applikacioni i cili ofron shperbime perdorusev,te cilet duan te mesojn apo te zhvillojn njohurit ne shah.
+
+-Tech: ASP.NET MVC, MS SQL, Bootstrap
+
 GitHub:
 https://github.com/DhurimZz/learnchess-website
 Trello:
