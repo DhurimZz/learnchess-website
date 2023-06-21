@@ -70,7 +70,8 @@ namespace learnchess.Controllers
                     break;
             }
             int pageSize = 6;
-            return View(await PaginatedList<Videos>.CreateAsync(videos.AsNoTracking(), pageNumber ?? 1, pageSize));
+            var paginatedList = await PaginatedList<Videos>.CreateAsync(videos.AsNoTracking(), pageNumber ?? 1, pageSize);
+            return Ok(paginatedList);
         }
 
         // GET: Videos

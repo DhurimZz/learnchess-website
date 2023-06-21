@@ -70,7 +70,8 @@ namespace learnchess.Controllers
                     break;
             }
             int pageSize = 6;
-            return View(await PaginatedList<Games>.CreateAsync(games.AsNoTracking(), pageNumber ?? 1, pageSize));
+            var paginatedList = await PaginatedList<Games>.CreateAsync(games.AsNoTracking(), pageNumber ?? 1, pageSize);
+            return Ok(paginatedList);
         }
 
         // GET: Games
@@ -138,7 +139,6 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Create([Bind("GamesId,Thumbnail,Title,Url")] Games games)
         {
             if (ModelState.IsValid)
