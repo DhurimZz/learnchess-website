@@ -37,11 +37,8 @@
 		{
 			<div class="col">
 				<div class="card">
-					@if (article.Photo != null)
-					{
-						<div><img id="photo" class="card-img-top" alt="..." style="object-fit:cover; height:21rem;width:100%;" src="data:image/*;base64,@(Convert.ToBase64String(article.Photo))"></div>
-					}
 					<div class="card-body">
+						<img class="card-img-top" alt="..." style="object-fit:cover; height:21rem;width:100%;" src="@Html.DisplayFor(modelItem => article.Photo)"/>
 						<h5 class="card-title">@Html.DisplayFor(modelItem => article.Title)</h5>
 						<p class="card-text">@Html.DisplayFor(modelItem => article.Description)</p>
 						<a class="btn btn-info" href="@Html.DisplayFor(modelItem => article.url)">Read More</a>

@@ -44,10 +44,7 @@
 				{
 					<tr>
 						<td>
-							@if (item.Video != null)
-							{
-								<img style="width:150px;height:100px;" id="photo" class="" alt="..." object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.Video))">
-							}
+							 <img  id="photo" class="card-img-top" alt="..." style="width:150px;height:100px;" src="@Html.DisplayFor(modelItem => item.Video)"/>
 						</td>
 						<td>
 							@Html.DisplayFor(modelItem => item.Title)

@@ -43,12 +43,7 @@
 		{
 			<div class="col">
 				<div class="card bg-dark">
-					@if (Videos.Video != null)
-					{
-						<div class="card bg-dark">
-							<img id="photo" class="card-img-top" alt="..." style="object-fit:cover; height:21rem;width:100%;" src="data:image/*;base64,@(Convert.ToBase64String(Videos.Video))">
-						</div>
-					}
+					<img class="card-img-top" alt="..." style="object-fit:cover; height:21rem;width:100%;" src="@Html.DisplayFor(modelItem => Videos.Video)"/>
 
 					<div class="card-body">
 						<h5 class="card-title text-warning">@Html.DisplayFor(modelItem => Videos.Title)</h5>

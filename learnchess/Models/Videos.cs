@@ -3,7 +3,7 @@
     public class Videos
     {
         public string? VideosId { get; set; }
-        public byte[]? Video { get; set; }
+        public string? Video { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Url { get; set; }

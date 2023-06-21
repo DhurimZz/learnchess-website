@@ -12,7 +12,7 @@ using learnchess.Areas.Identity.Data;
 namespace learnchess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230208213518_init all tables")]
+    [Migration("20230604183844_init all tables")]
     partial class initalltables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -123,8 +123,8 @@ namespace learnchess.Migrations
                     b.Property<string>("LevelId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<byte[]>("Photo")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("Photo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -193,8 +193,8 @@ namespace learnchess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GamesId"), 1L, 1);
 
-                    b.Property<byte[]>("Thumbnail")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("Thumbnail")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -239,15 +239,21 @@ namespace learnchess.Migrations
 
             modelBuilder.Entity("learnchess.Models.Videos", b =>
                 {
-                    b.Property<int>("VideosId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("VideosId")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VideosId"), 1L, 1);
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LanguageId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LevelId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -257,10 +263,16 @@ namespace learnchess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("Video")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("Video")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("VideosId");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("LevelId");
 
                     b.ToTable("Videos", "Identity");
                 });
@@ -419,6 +431,27 @@ namespace learnchess.Migrations
                     b.Navigation("Level");
                 });
 
+            modelBuilder.Entity("learnchess.Models.Videos", b =>
+                {
+                    b.HasOne("learnchess.Models.Author", "Author")
+                        .WithMany("Videos")
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("learnchess.Models.Languages", "Language")
+                        .WithMany("Videos")
+                        .HasForeignKey("LanguageId");
+
+                    b.HasOne("learnchess.Models.Levels", "Level")
+                        .WithMany("Videos")
+                        .HasForeignKey("LevelId");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Language");
+
+                    b.Navigation("Level");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -473,16 +506,22 @@ namespace learnchess.Migrations
             modelBuilder.Entity("learnchess.Models.Author", b =>
                 {
                     b.Navigation("Article");
+
+                    b.Navigation("Videos");
                 });
 
             modelBuilder.Entity("learnchess.Models.Languages", b =>
                 {
                     b.Navigation("Article");
+
+                    b.Navigation("Videos");
                 });
 
             modelBuilder.Entity("learnchess.Models.Levels", b =>
                 {
                     b.Navigation("Article");
+
+                    b.Navigation("Videos");
                 });
 #pragma warning restore 612, 618
         }

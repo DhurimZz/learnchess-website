@@ -14,7 +14,6 @@ using ContosoUniversity;
 
 namespace learnchess.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class RolesController : Controller
     {
         private readonly ApplicationDbContext _context;

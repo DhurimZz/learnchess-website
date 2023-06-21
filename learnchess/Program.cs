@@ -18,9 +18,23 @@ builder.Services.AddScoped<RoleManager<IdentityRole>>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("VueCorsPolicy",
+        builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
+
+
+ 
 
 
 var app = builder.Build();
+
+app.UseCors("VueCorsPolicy");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

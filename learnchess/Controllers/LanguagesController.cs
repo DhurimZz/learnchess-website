@@ -12,7 +12,7 @@ using ContosoUniversity;
 
 namespace learnchess.Controllers
 {
-    [Authorize(Roles = "Admin,Moderator")]
+   
     public class LanguagesController : Controller
     {
         private readonly ApplicationDbContext _context;

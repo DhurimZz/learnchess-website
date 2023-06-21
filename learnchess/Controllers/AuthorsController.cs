@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace learnchess.Controllers
 {
-    [Authorize(Roles = "Admin,Moderator")]
     public class AuthorsController : Controller
     {
         private readonly ApplicationDbContext _context;

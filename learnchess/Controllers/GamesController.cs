@@ -12,7 +12,6 @@ using ContosoUniversity;
 
 namespace learnchess.Controllers
 {
-    [Authorize(Roles = "Admin,Moderator,User")]
     public class GamesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -75,7 +74,6 @@ namespace learnchess.Controllers
         }
 
         // GET: Games
-        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             ViewData["CurrentSort"] = sortOrder;
@@ -112,7 +110,6 @@ namespace learnchess.Controllers
         }
 
         // GET: Games/Details/5
-        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Games == null)
@@ -131,7 +128,6 @@ namespace learnchess.Controllers
         }
 
         // GET: Games/Create
-        [Authorize(Roles = "Admin,Moderator")]
         public IActionResult Create()
         {
             return View();
@@ -147,15 +143,7 @@ namespace learnchess.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (Request.Form.Files.Count > 0)
-                {
-                    IFormFile file = Request.Form.Files.FirstOrDefault();
-                    using (var dataStream = new MemoryStream())
-                    {
-                        await file.CopyToAsync(dataStream);
-                        games.Thumbnail = dataStream.ToArray();
-                    }
-                }
+                
                 _context.Add(games);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -164,7 +152,6 @@ namespace learnchess.Controllers
         }
 
         // GET: Games/Edit/5
-        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Games == null)
@@ -185,7 +172,6 @@ namespace learnchess.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Edit(int id, [Bind("GamesId,Thumbnail,Title,Url")] Games games)
         {
             if (id != games.GamesId)
@@ -197,15 +183,6 @@ namespace learnchess.Controllers
             {
                 try
                 {
-                    if (Request.Form.Files.Count > 0)
-                    {
-                        IFormFile file = Request.Form.Files.FirstOrDefault();
-                        using (var dataStream = new MemoryStream())
-                        {
-                            await file.CopyToAsync(dataStream);
-                            games.Thumbnail = dataStream.ToArray();
-                        }
-                    }
                     _context.Update(games);
                     await _context.SaveChangesAsync();
                 }
@@ -226,7 +203,6 @@ namespace learnchess.Controllers
         }
 
         // GET: Games/Delete/5
-        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Games == null)
@@ -247,7 +223,6 @@ namespace learnchess.Controllers
         // POST: Games/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Games == null)
