@@ -12,21 +12,24 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace learnchess.Controllers
 {
-    public class AuthorsController : Controller
+    public class BooksController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public AuthorsController(ApplicationDbContext context)
+        public BooksController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Authors
-        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+
+        // GET: Articles
+
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber, int? searchNumber)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["CurrentFilter"] = searchString;
+
             if (searchString != null)
             {
                 pageNumber = 1;
@@ -36,91 +39,110 @@ namespace learnchess.Controllers
                 searchString = currentFilter;
             }
 
-            var authors = from a in _context.authors
-                          select a;
+            var books = from b in _context.books
+                        select b;
+
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                authors = authors.Where(a => a.Name.Contains(searchString));
+                books = books.Where(b => b.Author.Name.Contains(searchString));
+            }
+            if (searchNumber != null )
+            {
+                books = books.Where(b => b.PublicationYear.Equals(searchNumber));
             }
             switch (sortOrder)
             {
                 case "name_desc":
-                    authors = authors.OrderByDescending(a => a.Name);
+                    books = books.OrderByDescending(b => b.Title);
                     break;
                 default:
-                    authors = authors.OrderBy(a => a.Name);
+                    books = books.OrderBy(b => b.Title);
                     break;
             }
             int pageSize = 5;
-            return View(await PaginatedList<Author>.CreateAsync(authors.AsNoTracking(), pageNumber ?? 1, pageSize));
+            return View(await PaginatedList<Book>.CreateAsync(books.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
-        // GET: Authors/Details/5
+        // GET: Articles/Details/5
+      
         public async Task<IActionResult> Details(string? id)
         {
-            if (id == null || _context.authors == null)
+            if (id == null || _context.Article == null)
             {
                 return NotFound();
             }
 
-            var author = await _context.authors
-                .FirstOrDefaultAsync(m => m.AuthorId == id);
-            if (author == null)
+            var article = await _context.Article
+                .FirstOrDefaultAsync(m => m.ArticleId == id);
+            if (article == null)
             {
                 return NotFound();
             }
 
-            return View(author);
+            return View(article);
         }
 
-        // GET: Authors/Create
+        // GET: Articles/Create
         public IActionResult Create()
         {
+            var authors = _context.authors.ToList();
+            ViewBag.Authors = authors;
+
             return View();
         }
 
-        // POST: Authors/Create
+        // POST: Articles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AuthorId,Name,SurName, BirthYear")] Author author)
+      
+        public async Task<IActionResult> Create([Bind("BookId,Title,PublicationYear,AuthorId")] Book book)
         {
+
             if (ModelState.IsValid)
             {
-                author.AuthorId = Guid.NewGuid().ToString();
-                _context.Add(author);
+                book.BookId = Guid.NewGuid().ToString();
+                var a = await _context.authors.FindAsync(book.AuthorId);
+                book.AuthorId = a.AuthorId;
+                book.Author = a;
+
+                _context.Add(book);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(author);
+            return View(book);
         }
 
-        // GET: Authors/Edit/5
+        // GET: Articles/Edit/5
+       
         public async Task<IActionResult> Edit(string? id)
         {
-            if (id == null || _context.authors == null)
+            var authors = _context.authors.ToList();
+            ViewBag.Authors = authors;
+            if (id == null || _context.books == null)
             {
                 return NotFound();
             }
 
-            var author = await _context.authors.FindAsync(id);
-            if (author == null)
+            var book = await _context.books.FindAsync(id);
+            if (book == null)
             {
                 return NotFound();
             }
-            return View(author);
+            return View(book);
         }
 
-        // POST: Authors/Edit/5
+        // POST: Articles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("AuthorId,Name,SurName, BirthYear")] Author author)
+        
+        public async Task<IActionResult> Edit(string id, [Bind("BookId,Title,PublicationYear,AuthorId")] Book book)
         {
-            if (id != author.AuthorId)
+            if (id != book.BookId)
             {
                 return NotFound();
             }
@@ -129,12 +151,16 @@ namespace learnchess.Controllers
             {
                 try
                 {
-                    _context.Update(author);
+                    var a = await _context.authors.FindAsync(book.AuthorId);
+                    book.AuthorId = a.AuthorId;
+                    book.Author = a;
+
+                    _context.Update(book);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AuthorExists(author.AuthorId))
+                    if (!BookExists(book.BookId))
                     {
                         return NotFound();
                     }
@@ -145,49 +171,50 @@ namespace learnchess.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(author);
+            return View(book);
         }
 
-        // GET: Authors/Delete/5
+        // GET: Articles/Delete/5
+       
         public async Task<IActionResult> Delete(string? id)
         {
-            if (id == null || _context.authors == null)
+            if (id == null || _context.books == null)
             {
                 return NotFound();
             }
 
-            var author = await _context.authors
-                .FirstOrDefaultAsync(m => m.AuthorId == id);
-            if (author == null)
+            var book = await _context.books
+                .FirstOrDefaultAsync(m => m.BookId == id);
+            if (book == null)
             {
                 return NotFound();
             }
 
-            return View(author);
+            return View(book);
         }
 
-        // POST: Authors/Delete/5
+        // POST: Articles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (_context.authors == null)
+            if (_context.books == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.authors'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Article'  is null.");
             }
-            var author = await _context.authors.FindAsync(id);
-            if (author != null)
+            var book = await _context.books.FindAsync(id);
+            if (book != null)
             {
-                _context.authors.Remove(author);
+                _context.books.Remove(book);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AuthorExists(string id)
+        private bool BookExists(string id)
         {
-            return _context.authors.Any(e => e.AuthorId == id);
+            return _context.books.Any(e => e.BookId == id);
         }
     }
 }

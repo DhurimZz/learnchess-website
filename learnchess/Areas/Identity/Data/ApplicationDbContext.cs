@@ -44,7 +44,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.ToTable("UserTokens");
         });
     }
-    public DbSet<Author> authors { get; set; }
+    public DbSet<learnchess.Models.Author> authors { get; set; } 
+    public DbSet<learnchess.Models.Book> books { get; set; }
     public DbSet<learnchess.Models.Contactus> Contactus { get; set; }
 
 

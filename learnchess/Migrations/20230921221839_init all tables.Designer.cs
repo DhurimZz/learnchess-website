@@ -12,7 +12,7 @@ using learnchess.Areas.Identity.Data;
 namespace learnchess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230604183844_init all tables")]
+    [Migration("20230921221839_init all tables")]
     partial class initalltables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -150,17 +150,39 @@ namespace learnchess.Migrations
                     b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("BirthYear")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SurName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AuthorId");
 
                     b.ToTable("authors", "Identity");
+                });
+
+            modelBuilder.Entity("learnchess.Models.Book", b =>
+                {
+                    b.Property<string>("BookId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("PublicationYear")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("BookId");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("books", "Identity");
                 });
 
             modelBuilder.Entity("learnchess.Models.Contactus", b =>
@@ -431,6 +453,15 @@ namespace learnchess.Migrations
                     b.Navigation("Level");
                 });
 
+            modelBuilder.Entity("learnchess.Models.Book", b =>
+                {
+                    b.HasOne("learnchess.Models.Author", "Author")
+                        .WithMany("Books")
+                        .HasForeignKey("AuthorId");
+
+                    b.Navigation("Author");
+                });
+
             modelBuilder.Entity("learnchess.Models.Videos", b =>
                 {
                     b.HasOne("learnchess.Models.Author", "Author")
@@ -506,6 +537,8 @@ namespace learnchess.Migrations
             modelBuilder.Entity("learnchess.Models.Author", b =>
                 {
                     b.Navigation("Article");
+
+                    b.Navigation("Books");
 
                     b.Navigation("Videos");
                 });

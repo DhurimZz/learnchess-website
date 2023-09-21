@@ -48,8 +48,9 @@ namespace learnchess.Migrations
                 columns: table => new
                 {
                     AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SurName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SurName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BirthYear = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -193,6 +194,27 @@ namespace learnchess.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "books",
+                schema: "Identity",
+                columns: table => new
+                {
+                    BookId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PublicationYear = table.Column<int>(type: "int", nullable: true),
+                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_books", x => x.BookId);
+                    table.ForeignKey(
+                        name: "FK_books_authors_AuthorId",
+                        column: x => x.AuthorId,
+                        principalSchema: "Identity",
+                        principalTable: "authors",
+                        principalColumn: "AuthorId");
                 });
 
             migrationBuilder.CreateTable(
@@ -352,6 +374,12 @@ namespace learnchess.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_books_AuthorId",
+                schema: "Identity",
+                table: "books",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 schema: "Identity",
                 table: "Role",
@@ -406,6 +434,10 @@ namespace learnchess.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Article",
+                schema: "Identity");
+
+            migrationBuilder.DropTable(
+                name: "books",
                 schema: "Identity");
 
             migrationBuilder.DropTable(
